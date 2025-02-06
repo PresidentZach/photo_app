@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5a8ps7md4vnp"]
+
+[ext_resource type="Script" path="res://scripts/supabase.gd" id="1_u2fte"]
+[ext_resource type="PackedScene" uid="uid://cco8wqar5idjv" path="res://scenes/supabase_request.tscn" id="2_v7vao"]
+
+[node name="main_scene_temp" type="Node"]
+script = ExtResource("1_u2fte")
+
+[node name="supabase_request" parent="." instance=ExtResource("2_v7vao")]

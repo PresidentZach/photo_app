@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://cco8wqar5idjv"]
+
+[node name="supabase_request" type="HTTPRequest"]
