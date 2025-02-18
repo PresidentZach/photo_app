@@ -20,4 +20,4 @@ func _on_request_completed(result: int, response_code: int, headers: PackedStrin
 	print("Response: ", response_text)
 
 func _ready() -> void:
-	request_supabase("/photo", HTTPClient.METHOD_GET)
+	request_supabase("/rest/v1/photo", HTTPClient.METHOD_GET)
