@@ -1,6 +1,5 @@
-extends Node2D
+extends Node
 
-#this is the software manager. It will be the root of ALL scenes in the project. 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
