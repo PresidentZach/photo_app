@@ -1,7 +1,7 @@
 extends Node
 
-const SUPABASE_URL = "https://aiglsybtzbvindkwxzph.supabase.co"
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpZ2xzeWJ0emJ2aW5ka3d4enBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg3MDI2NjUsImV4cCI6MjA1NDI3ODY2NX0.NaHQc4gkyP0RplgjAORuLFuMk0z0trP7BV608mJx5pw"
+const SUPABASE_URL = "https://dwesnrinrszmstvduvue.supabase.co"
+const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3ZXNucmlucnN6bXN0dmR1dnVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk5NzczNzcsImV4cCI6MjA1NTU1MzM3N30.hKvPPwLgvg7zz3o8ZYhgNGnvCmG4fcgECORh-LFEh-A"
 
 @onready var http_request = get_node("supabase_request")  # Reference HTTPRequest node
 
