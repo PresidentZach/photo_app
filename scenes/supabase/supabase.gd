@@ -21,3 +21,9 @@ func _on_request_completed(result: int, response_code: int, headers: PackedStrin
 
 func _ready() -> void:
 	request_supabase("/rest/v1/photo", HTTPClient.METHOD_GET)
+	
+	print("SoftwareManager _ready() called!")
+	
+	# Create a new photo object
+	var my_photo = Photo.new(0, "https://example.com/photo.jpg", ["vacation", "beach"])
+	add_child(my_photo)  
