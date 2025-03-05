@@ -1,4 +1,4 @@
-<p align="center"><img src="addons/supabase/icon.svg" width="80px"/></p>
+p align="center"><img src="addons/supabase/icon.svg" width="80px"/></p>
 
 👉 [3.x](https://github.com/supabase-community/godot-engine.supabase/tree/main)
 
