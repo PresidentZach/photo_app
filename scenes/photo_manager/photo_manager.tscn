@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://mdaypcmntkn2"]
+
+[ext_resource type="Script" uid="uid://cnifmm8vdx8jt" path="res://scenes/photo_manager/photo_manager.gd" id="1_5uc8u"]
+
+[node name="photo_manager" type="Node2D"]
+script = ExtResource("1_5uc8u")

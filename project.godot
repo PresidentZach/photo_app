@@ -17,4 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-global_functions="*res://scripts/global/global_functions.gd"
+Supabase="*res://addons/supabase/Supabase/supabase.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/supabase/plugin.cfg")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://7jwpnvogdaen"]
+
+[ext_resource type="Script" uid="uid://c2hsr34255ohd" path="res://scenes/photo/photo.gd" id="1_rjcns"]
+
+[node name="photo" type="Node2D"]
+script = ExtResource("1_rjcns")
