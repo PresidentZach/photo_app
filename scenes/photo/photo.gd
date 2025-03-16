@@ -11,8 +11,8 @@ var tags: Array
 
 func _ready() -> void:
 	print("📸 Creating photo entry in database...")
-	add_photo_to_database("https://example.com/sample2.jpg", "Alex Scalcione", false, [1, 37, 20])
-	set_photo_creator("Zachary Stofko")
+	add_photo_to_database("https://thisIsATestForAlex.jpg", "testForAlex3/16/25", false, [3, 16, 2025])
+	#set_photo_creator("test")
 
 func add_photo_to_database(new_photo_url: String, new_photo_creator: String, new_verified_tags: bool, new_tags: Array):
 	
