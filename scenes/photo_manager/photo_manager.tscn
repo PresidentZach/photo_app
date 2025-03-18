@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d2tusu8atsga5"]
 
-[ext_resource type="Script" path="res://scenes/photo_manager/photo_manager.gd" id="1_rb2ll"]
+[ext_resource type="Script" uid="uid://5biejn1xt3rd" path="res://scenes/photo_manager/photo_manager.gd" id="1_rb2ll"]
 
 [node name="photo_manager" type="Node2D"]
 script = ExtResource("1_rb2ll")
