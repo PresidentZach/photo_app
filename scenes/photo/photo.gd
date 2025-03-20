@@ -80,7 +80,7 @@ func update_database() -> void:
 	
 
 func get_id():
-	var query = SupabaseQuery.new().from("photo").select(["*"])
+	var query = SupabaseQuery.new().from("photo").select(["id"]).eq("photo_url", photo_url)
 	var task = Supabase.database.query(query)
 	
 	# Connect signal to process response when query is done
