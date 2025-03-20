@@ -1,14 +1,24 @@
 extends Node
 
 func _ready():
+	
+	# test if connection is successful
+	database_connection_test()
+	
+	# create a test photo scene
+	create_scene("res://scenes/photo/photo.tscn")
+
+func database_connection_test() -> bool:
+	
 	# test to see if there's a connection to the database
+	
 	if Supabase:
 		print("The connection to the database was successful. Connection URL: ", Supabase.config.supabaseUrl)
+		return true
 	else:
 		print("The connection to the database failed.")
-		get_tree().quit() #quits out of the program (for now)'
-	
-	create_scene("res://scenes/photo/photo.tscn")
+		return false
+		get_tree().quit() # quits out of the program
 
 func create_scene(scene_path: String):
 	

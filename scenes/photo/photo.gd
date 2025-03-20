@@ -21,15 +21,15 @@ var tags: Array = [111, 222, 333] # nullable
 # getter and setter methods that work
 # 
 
+# methods that work
+# add_to_database()
+# calculate_date()
+
 func _ready() -> void:
-	#print("📸 Creating photo entry in database...")
-	#update_database()
-	add_to_database("temporaryURL", 23445, [1, 2, 3])
-	#set_photo_creator("test")
-	print(calculate_date())
-	# test for getter and setter functions
-	#print(await get_photo_id())
 	
+	add_to_database("temporaryURL", 23445, [1, 2, 3])
+	get_date()
+
 
 func add_to_database(add_photo_url: String, add_photo_creator: int, add_tags: Array) -> void:
 	
@@ -109,6 +109,20 @@ func calculate_date() -> String:
 	
 	# Format: "MM / DD / YYYY"
 	return month + "-" + day + "-" + year
+
+func get_date() -> String:
+	var query = SupabaseQuery.new().from("photo").select(["date_created"]).order("id", false)
+	var response = await Supabase.database.query(query)
+	
+	if response.error == null:
+		print(response)
+		#date_created = response.data #updating the global variable
+		print("date_created:", date_created, " returned for photo.id: ", id)
+		return date_created
+	
+	print("failed to get date_created for photo.id: ", id)
+	date_created = "00-00-0000"
+	return "00-00-0000"
 
 func get_photo_creator() -> String:
 	# update the photo to make sure all info is correct before returning it
