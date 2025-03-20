@@ -7,15 +7,16 @@ func _ready() -> void:
 	return
 
 func fetch_photos_from_database(user_id: String) -> void:
-	var query = SupabaseQuery.new().from("photo").select("*").eq("photo_creator", user_id)
-	var response = await Supabase.database.query(query)
+#	var query = SupabaseQuery.new().from("photo").select("*").eq("photo_creator", user_id)
+#	var response = await Supabase.database.query(query)
 
-	if response.success:
-		list_of_photos.clear()  # Remove old entries
-		for record in response.data:
-			var photo_scene = photo.new()  # Create new photo object
-			photo_scene.load_from_database(record)  # Load data from DB
-			list_of_photos.append(photo_scene)
+#	if response.success:
+#		list_of_photos.clear()  # Remove old entries
+#		for record in response.data:
+#			var photo_scene = photo.new()  # Create new photo object
+#			photo_scene.load_from_database(record)  # Load data from DB
+#			list_of_photos.append(photo_scene)
+	return
 
 func add_photo_to_database(new_photo: photo) -> void:
 	await new_photo.insert_to_database()  # Calls method in Photo class

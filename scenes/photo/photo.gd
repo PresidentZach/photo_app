@@ -16,7 +16,7 @@ var id: int = -1 # unique
 var photo_url: String = "none" # unique
 var date_created: String = "none" # nullable
 var photo_creator: int = -1 
-var tags: Array = ["none"] # nullable
+var tags: Array = [111, 222, 333] # nullable
 
 # getter and setter methods that work
 # 
@@ -49,8 +49,8 @@ func add_to_database(add_photo_url: String, add_photo_creator: int, add_tags: Ar
 			# don't set the photo_id because the database does that
 			"photo_url": photo_url,
 			"date_created": date_created,
-			"photo_creator": photo_creator
-			#"tags": tags
+			"photo_creator": photo_creator,
+			"tags": tags
 		}
 	])
 	
@@ -108,7 +108,7 @@ func calculate_date() -> String:
 	var year = str(computer_date.year)
 	
 	# Format: "MM / DD / YYYY"
-	return month + " / " + day + " / " + year
+	return month + "-" + day + "-" + year
 
 func get_photo_creator() -> String:
 	# update the photo to make sure all info is correct before returning it
