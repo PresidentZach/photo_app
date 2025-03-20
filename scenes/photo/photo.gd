@@ -84,9 +84,25 @@ func get_id():
 	var task = Supabase.database.query(query)
 	
 	# Connect signal to process response when query is done
-	task.completed.connect(_on_query_completed)
+	await task.completed
 	
-func _on_query_completed(task):
+	if task.error:
+		print("Supabase Query Error:", task.error.message)
+		return
+	
+	if task.data and task.data.size() > 0:
+		return int(task.data[0]["id"])
+	
+	print("No data returned.")
+	return -1
+
+func get_example():
+	var query = SupabaseQuery.new().from("photo").select(["id"]).eq("photo_url", photo_url)
+	var task = Supabase.database.query(query)
+	
+	# Connect signal to process response when query is done
+	await task.completed
+	
 	if task.error:
 		print("Supabase Query Error:", task.error.message)
 		return
@@ -95,7 +111,6 @@ func _on_query_completed(task):
 		print("Query Result:", task.data)
 	else:
 		print("No data returned.")
-
 
 func get_photo_url() -> String:
 	# get the value from the database, set photo_url to it, and then return it? 
