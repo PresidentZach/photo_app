@@ -1,5 +1,8 @@
 extends Node
 
+# NOTE photo oject only deals with itself and doesn't create itself in
+# the database. Photo Manager creates photos in the database.
+
 # NOTE I don't think the update function is working or the set functions maybe.
 # also, make it so there's a function in photo manager that loops and creates all the photos in a global list. You don't need
 # a dictionary because photos have Id's and stuff, or maybe you can use the id as the dictionary key? 
@@ -8,62 +11,85 @@ extends Node
 
 # will add and update function do the same thing? 
 
-var photo_id: int = -1 # should be a unique value; not shared with any other photo
-# defaults to -1 because database assigns 1+ as an id, so -1 means it's not in the database and so hasn't been assigned an id
-var photo_url: String # should be a unique value; not shared with any other photo
-var photo_date_created: int = 00000000
-var photo_creator: String
-var verified_tags: bool
-var tags: Array
+# global variables of the photo with default values
+var id: int = -1 # unique
+var photo_url: String = "none" # unique
+var date_created: String = "none" # nullable
+var photo_creator: int = -1 
+var tags: Array = ["none"] # nullable
 
 # getter and setter methods that work
 # 
 
 func _ready() -> void:
-	print("📸 Creating photo entry in database...")
-	update_database("https://thisIsATestForAlex.jpg", "testForAlex3/16/25", false, [3, 16, 2025])
+	#print("📸 Creating photo entry in database...")
+	#update_database()
+	add_to_database("temporaryURL", 23445, [1, 2, 3])
 	#set_photo_creator("test")
-	
+	print(calculate_date())
 	# test for getter and setter functions
-	get_photo_id()
+	#print(await get_photo_id())
 	
 
-func update_database(new_photo_url: String, new_photo_creator: String, new_verified_tags: bool, new_tags: Array) -> void:
+func add_to_database(add_photo_url: String, add_photo_creator: int, add_tags: Array) -> void:
 	
-	# if no photo exists in the database, create one. Otherwise, update the contents of the photo. 
+	# NOTE photo_id is decided by the database
+	# date is determined by day photo is added to the database
+	# verified_photo_tags is decided later
 	
-	# setting the photo's creation date
-	if photo_date_created == 00000000: # if photo_date_created hasn't been initialized yet
-		photo_date_created = get_date()
+	# setting the global variables of this scene
+	# photo id is set by the databa se
+	photo_url = add_photo_url
+	date_created = calculate_date()
+	photo_creator = add_photo_creator
+	tags = add_tags
 	
 	var query = SupabaseQuery.new().from("photo").insert([
 		{
 			# don't set the photo_id because the database does that
-			"photo_url": new_photo_url,
-			"photo_date_created": photo_date_created,
-			"photo_creator": new_photo_creator,
-			"verified_tags": new_verified_tags,
-			"tags": new_tags
+			"photo_url": photo_url,
+			"date_created": date_created,
+			"photo_creator": photo_creator
+			#"tags": tags
 		}
 	])
 	
-	# assigning the global variables of the photo scene the new / updated values
-	photo_id = await get_photo_id()
-	photo_url = new_photo_url
-	photo_creator = new_photo_creator
-	verified_tags = new_verified_tags
-	tags = new_tags
+	var response = await Supabase.database.query(query)
+	id = await get_photo_id()
+
+# assumes global values are updated before updating the photo in the database
+func update_database() -> void:
+	
+	# if no photo exists in the database, create one. Otherwise, update the contents of the photo. 
+	#if photo_date_created == 00000000: # if photo_date_created hasn't been initialized yet
+	#	photo_date_created = calculate_date()
+	
+	var query = SupabaseQuery.new().from("photo").insert([
+		{
+			# don't set the photo_id because the database does that
+			"photo_url": photo_url,
+			"date_created": date_created,
+			"photo_creator": photo_creator,
+			"tags": tags
+		}
+	])
 	
 	var response = await Supabase.database.query(query)
+	#photo_id = await get_photo_id()
+	
+	
 
 func get_photo_id() -> int:
 	
 	# fetch the photo_id
 	var query = SupabaseQuery.new().from("photo").select(["photo_id"]).eq("photo_url", photo_url)
 	var response = await Supabase.database.query(query)
+	#photo_id = response.data[0]["photo_id"] # Extract the first record's ID
+	
+	# TODO update photo id
 	
 	# return the photo_id
-	return photo_id
+	return 20
 
 # no method to set photo id because that is prohibited
 
@@ -75,28 +101,22 @@ func get_photo_url() -> String:
 func set_photo_url() -> void:
 	return
 
-func get_date() -> int:
-	
-	# this method doesn't actually get the date of the photo, it get's the current date 
-	# on the device you're using when the photo is being created.
-	
+func calculate_date() -> String:
 	var computer_date = Time.get_datetime_dict_from_system()
+	var month = str(computer_date.month).pad_zeros(2)
+	var day = str(computer_date.day).pad_zeros(2)
+	var year = str(computer_date.year)
 	
-	# Extract month, day, and year
-	#var month = str(date.month).pad_zeros(2)
-	#var day = str(date.day).pad_zeros(2)
-	#var year = str(date.year)
-	
-	var date = 00000000 # formatted MMDDYYYY
-	return date
+	# Format: "MM / DD / YYYY"
+	return month + " / " + day + " / " + year
 
 func get_photo_creator() -> String:
 	# update the photo to make sure all info is correct before returning it
-	return photo_creator
+	return ""
 
 func set_photo_creator(new_photo_creator: String) -> void:
 	if new_photo_creator.length() > 0:
-		photo_creator = new_photo_creator
+		#photo_creator = new_photo_creator
 		print("photo_creator set for ", photo_url)
 	else:
 		print("Failed to set photo_creator for ", photo_url)
