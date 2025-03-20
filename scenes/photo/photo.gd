@@ -27,8 +27,7 @@ var tags: Array = [111, 222, 333] # nullable
 
 func _ready() -> void:
 	
-	add_to_database("temporaryURL2", 78915, [2, 3, 4])
-	(get_date())
+	add_to_database("temporaryURL3", 78915, [2, 3, 4])
 	print(await get_id())
 
 
@@ -83,14 +82,23 @@ func update_database() -> void:
 func get_id() -> int:
 	
 	# fetch the photo_id
-	var query = SupabaseQuery.new().from("photo").select(["id"]).eq("photo_url", photo_url)
+	#var query = SupabaseQuery.new().from("photo").select(["id"]).eq("photo_url", photo_url)
+	#var response = await Supabase.database.query(query)
+	
+	var query = SupabaseQuery.new().from("photo").select(["*"])
 	var response = await Supabase.database.query(query)
-	id = response.data[0]["id"] # Extract the first record's ID
+	print()
+	print()
+	print(response)
+	print()
+	print()
 	
-	# TODO update photo id
+	#if response.error == null and response.data is Array and response.data.size() > 0:
+	#	id = response.data[0]["id"]
+	#	return id
 	
-	# return the photo_id
-	return 20
+	print("failed to get photo.id for photo.photo_url: ", photo_url)
+	return -1
 
 # no method to set photo id because that is prohibited
 
