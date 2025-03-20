@@ -27,8 +27,9 @@ var tags: Array = [111, 222, 333] # nullable
 
 func _ready() -> void:
 	
-	add_to_database("temporaryURL", 23445, [1, 2, 3])
-	get_date()
+	add_to_database("temporaryURL2", 78915, [2, 3, 4])
+	(get_date())
+	print(await get_id())
 
 
 func add_to_database(add_photo_url: String, add_photo_creator: int, add_tags: Array) -> void:
@@ -55,7 +56,7 @@ func add_to_database(add_photo_url: String, add_photo_creator: int, add_tags: Ar
 	])
 	
 	var response = await Supabase.database.query(query)
-	id = await get_photo_id()
+	# id = await get_id()
 
 # assumes global values are updated before updating the photo in the database
 func update_database() -> void:
@@ -79,12 +80,12 @@ func update_database() -> void:
 	
 	
 
-func get_photo_id() -> int:
+func get_id() -> int:
 	
 	# fetch the photo_id
-	var query = SupabaseQuery.new().from("photo").select(["photo_id"]).eq("photo_url", photo_url)
+	var query = SupabaseQuery.new().from("photo").select(["id"]).eq("photo_url", photo_url)
 	var response = await Supabase.database.query(query)
-	#photo_id = response.data[0]["photo_id"] # Extract the first record's ID
+	id = response.data[0]["id"] # Extract the first record's ID
 	
 	# TODO update photo id
 	
@@ -117,11 +118,10 @@ func get_date() -> String:
 	if response.error == null:
 		print(response)
 		#date_created = response.data #updating the global variable
-		print("date_created:", date_created, " returned for photo.id: ", id)
 		return date_created
 	
 	print("failed to get date_created for photo.id: ", id)
-	date_created = "00-00-0000"
+	date_created = "00-00-0000" # set the global variable to an invalid value
 	return "00-00-0000"
 
 func get_photo_creator() -> String:
