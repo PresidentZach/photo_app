@@ -27,7 +27,7 @@ var tags: Array = [111, 222, 333] # nullable
 
 func _ready() -> void:
 	
-	add_to_database("temporaryURL3", 78915, [2, 3, 4])
+	add_to_database("temporaryURL", 78915, [2, 3, 4])
 	print(await get_id())
 
 
@@ -79,28 +79,23 @@ func update_database() -> void:
 	
 	
 
-func get_id() -> int:
-	
-	# fetch the photo_id
-	#var query = SupabaseQuery.new().from("photo").select(["id"]).eq("photo_url", photo_url)
-	#var response = await Supabase.database.query(query)
-	
+func get_id():
 	var query = SupabaseQuery.new().from("photo").select(["*"])
-	var response = await Supabase.database.query(query)
-	print()
-	print()
-	print(response)
-	print()
-	print()
+	var task = Supabase.database.query(query)
 	
-	#if response.error == null and response.data is Array and response.data.size() > 0:
-	#	id = response.data[0]["id"]
-	#	return id
+	# Connect signal to process response when query is done
+	task.completed.connect(_on_query_completed)
 	
-	print("failed to get photo.id for photo.photo_url: ", photo_url)
-	return -1
+func _on_query_completed(task):
+	if task.error:
+		print("Supabase Query Error:", task.error.message)
+		return
+	
+	if task.data and task.data.size() > 0:
+		print("Query Result:", task.data)
+	else:
+		print("No data returned.")
 
-# no method to set photo id because that is prohibited
 
 func get_photo_url() -> String:
 	# get the value from the database, set photo_url to it, and then return it? 
