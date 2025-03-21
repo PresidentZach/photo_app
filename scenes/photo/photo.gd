@@ -23,10 +23,11 @@ var tags: Array = [39909] # nullable
 # calculate_date()
 # getter methods
 # setter methods
+# delete_self_from_database()
 
 func _ready() -> void:
 	
-	add_to_database("testURL_afterSetMethod", 78915, [2, 3, 4])
+	await add_to_database("testURL_afterSetMethod", 78915, [2, 3, 4])
 
 
 func add_to_database(add_url: String, add_creator: int, add_tags: Array) -> void:
@@ -230,6 +231,23 @@ func calculate_date() -> String:
 	# Format: "MM / DD / YYYY"
 	return month + "-" + day + "-" + year
 
-# delete this photo
-func delete() -> void:
-	return
+# delete this photo from the database
+func delete_self_from_database() -> void:
+	
+	# check to see if the id holds a value
+	if id == -1:
+		print("photo.id not set, so the photo can't be deleted.")
+		return
+	
+	var query = SupabaseQuery.new().from("photo").delete().eq("id", str(id))
+	var task = Supabase.database.query(query)
+	
+	# connect signal to process response when query is done
+	await task.completed
+	
+	# if there's an error when deleting the photo
+	if task.error:
+		print("Supabase query error when deleting photo of photo.id: ", id, " ", task.error.message)
+		return
+	
+	print("Successfully deleted photo of photo.id: ", id)
