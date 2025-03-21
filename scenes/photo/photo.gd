@@ -13,25 +13,23 @@ extends Node
 
 # global variables of the photo with default values
 var id: int = -1 # unique
-var photo_url: String = "none" # unique
-var date_created: String = "none" # nullable
-var photo_creator: int = -1 
-var tags: Array = [111, 222, 333] # nullable
-
-# getter and setter methods that work
-# 
+var url: String = "no_url" # unique
+var creator: int = -1 
+var date_created: String = "no_date" # nullable
+var tags: Array = [39909] # nullable
 
 # methods that work
 # add_to_database()
 # calculate_date()
+# getter methods
+# setter methods
 
 func _ready() -> void:
 	
-	add_to_database("temporaryURL", 78915, [2, 3, 4])
-	print(await get_id())
+	add_to_database("testURL_afterSetMethod", 78915, [2, 3, 4])
 
 
-func add_to_database(add_photo_url: String, add_photo_creator: int, add_tags: Array) -> void:
+func add_to_database(add_url: String, add_creator: int, add_tags: Array) -> void:
 	
 	# NOTE photo_id is decided by the database
 	# date is determined by day photo is added to the database
@@ -39,86 +37,189 @@ func add_to_database(add_photo_url: String, add_photo_creator: int, add_tags: Ar
 	
 	# setting the global variables of this scene
 	# photo id is set by the databa se
-	photo_url = add_photo_url
+	url = add_url
 	date_created = calculate_date()
-	photo_creator = add_photo_creator
+	creator = add_creator
 	tags = add_tags
 	
 	var query = SupabaseQuery.new().from("photo").insert([
 		{
 			# don't set the photo_id because the database does that
-			"photo_url": photo_url,
+			"url": url,
+			"creator": creator,
 			"date_created": date_created,
-			"photo_creator": photo_creator,
 			"tags": tags
 		}
 	])
 	
 	var response = await Supabase.database.query(query)
-	# id = await get_id()
+	id = await get_id()
 
-# assumes global values are updated before updating the photo in the database
-func update_database() -> void:
-	
-	# if no photo exists in the database, create one. Otherwise, update the contents of the photo. 
-	#if photo_date_created == 00000000: # if photo_date_created hasn't been initialized yet
-	#	photo_date_created = calculate_date()
-	
-	var query = SupabaseQuery.new().from("photo").insert([
-		{
-			# don't set the photo_id because the database does that
-			"photo_url": photo_url,
-			"date_created": date_created,
-			"photo_creator": photo_creator,
-			"tags": tags
-		}
-	])
-	
-	var response = await Supabase.database.query(query)
-	#photo_id = await get_photo_id()
-	
-	
-
-func get_id():
-	var query = SupabaseQuery.new().from("photo").select(["id"]).eq("photo_url", photo_url)
+func get_id() -> int:
+	var query = SupabaseQuery.new().from("photo").select(["id"]).eq("url", url)
 	var task = Supabase.database.query(query)
 	
-	# Connect signal to process response when query is done
+	# connect signal to process response when query is done
 	await task.completed
 	
+	# if there's an error when fetching
 	if task.error:
-		print("Supabase Query Error:", task.error.message)
-		return
+		id = -1
+		print("Supabase query error when fetching photo.id:", task.error.message)
+		return id
 	
+	# if fetching was successful
 	if task.data and task.data.size() > 0:
-		return int(task.data[0]["id"])
+		id = int(task.data[0]["id"])
+		return id
 	
-	print("No data returned.")
-	return -1
-
-func get_example():
-	var query = SupabaseQuery.new().from("photo").select(["id"]).eq("photo_url", photo_url)
+	# if all else fails
+	id = -1
+	print("No data returned when fetching photo.id.")
+	return id
+func get_url() -> String:
+	var query = SupabaseQuery.new().from("photo").select(["url"]).eq("id", str(id))
 	var task = Supabase.database.query(query)
 	
-	# Connect signal to process response when query is done
+	# connect signal to process response when query is done
 	await task.completed
 	
+	# if there's an error when fetching
 	if task.error:
-		print("Supabase Query Error:", task.error.message)
+		url = "no_url"
+		print("Supabase query error when fetching photo.url:", task.error.message)
+		return url
+	
+	# if fetching was successful
+	if task.data and task.data.size() > 0:
+		url = task.data[0]["url"]
+		return url
+	
+	# if all else fails
+	url = "no_url"
+	print("No data returned when fetching photo.url.")
+	return url
+func get_creator() -> int:
+	var query = SupabaseQuery.new().from("photo").select(["creator"]).eq("id", str(id))
+	var task = Supabase.database.query(query)
+	
+	# connect signal to process response when query is done
+	await task.completed
+	
+	# if there's an error when fetching
+	if task.error:
+		creator = -1
+		print("Supabase query error when fetching photo.creator:", task.error.message)
+		return creator
+	
+	# if fetching was successful
+	if task.data and task.data.size() > 0:
+		creator = int(task.data[0]["creator"])
+		return creator
+	
+	# if all else fails
+	creator = -1
+	print("No data returned when fetching photo.creator.")
+	return creator
+func get_date_created() -> String:
+	var query = SupabaseQuery.new().from("photo").select(["date_created"]).eq("id", str(id))
+	var task = Supabase.database.query(query)
+	
+	# connect signal to process response when query is done
+	await task.completed
+	
+	# if there's an error when fetching
+	if task.error:
+		date_created = "no_date"
+		print("Supabase query error when fetching photo.date_created:", task.error.message)
+		return date_created
+	
+	# if fetching was successful
+	if task.data and task.data.size() > 0:
+		date_created = task.data[0]["date_created"]
+		return date_created
+	
+	# if all else fails
+	date_created = "no_date"
+	print("No data returned when fetching photo.date_created.")
+	return date_created
+func get_tags() -> Array:
+	var query = SupabaseQuery.new().from("photo").select(["tags"]).eq("id", str(id))
+	var task = Supabase.database.query(query)
+	
+	# connect signal to process response when query is done
+	await task.completed
+	
+	# if there's an error when fetching
+	if task.error:
+		tags = [39909]
+		print("Supabase query error when fetching photo.tags:", task.error.message)
+		return tags
+	
+	# if fetching was successful
+	if task.data and task.data.size() > 0:
+		tags = Array(task.data[0]["tags"])
+		return tags
+	
+	# if all else fails
+	tags = [39909]
+	print("No data returned when fetching photo.tags.")
+	return tags
+
+func set_url(new_url: String) -> void:
+	
+	# check to see if the id holds a value
+	if id == -1:
+		print("photo.id not set, so photo.url cannot be set.")
 		return
 	
-	if task.data and task.data.size() > 0:
-		print("Query Result:", task.data)
-	else:
-		print("No data returned.")
-
-func get_photo_url() -> String:
-	# get the value from the database, set photo_url to it, and then return it? 
+	url = new_url # setting the global url
+	var query = SupabaseQuery.new().from("photo").update({"url": url}).eq("id", str(id))
+	var task = Supabase.database.query(query)
 	
-	return photo_url
-
-func set_photo_url() -> void:
-	return
+	# connect signal to process response when query is done
+	await task.completed
+	
+	# if there's an error when fetching
+	if task.error:
+		print("Supabase query error when setting photo.url:", task.error.message)
+		return
+func set_creator(new_creator: int) -> void:
+	
+	# check to see if the id holds a value
+	if id == -1:
+		print("photo.id not set, so photo.creator cannot be set.")
+		return
+	
+	creator = new_creator # setting the global url
+	var query = SupabaseQuery.new().from("photo").update({"creator": creator}).eq("id", str(id))
+	var task = Supabase.database.query(query)
+	
+	# connect signal to process response when query is done
+	await task.completed
+	
+	# if there's an error when fetching
+	if task.error:
+		print("Supabase query error when setting photo.creator:", task.error.message)
+		return
+func set_tags(new_tags: Array) -> void:
+	
+	# check to see if the id holds a value
+	if id == -1:
+		print("photo.id not set, so photo.tags cannot be set.")
+		return
+	
+	tags = new_tags # setting the global url
+	var query = SupabaseQuery.new().from("photo").update({"tags": tags}).eq("id", str(id))
+	var task = Supabase.database.query(query)
+	
+	# connect signal to process response when query is done
+	await task.completed
+	
+	# if there's an error when fetching
+	if task.error:
+		print("Supabase query error when setting photo.tags:", task.error.message)
+		return
 
 func calculate_date() -> String:
 	var computer_date = Time.get_datetime_dict_from_system()
@@ -129,57 +230,6 @@ func calculate_date() -> String:
 	# Format: "MM / DD / YYYY"
 	return month + "-" + day + "-" + year
 
-func get_date() -> String:
-	var query = SupabaseQuery.new().from("photo").select(["date_created"]).order("id", false)
-	var response = await Supabase.database.query(query)
-	
-	if response.error == null:
-		print(response)
-		#date_created = response.data #updating the global variable
-		return date_created
-	
-	print("failed to get date_created for photo.id: ", id)
-	date_created = "00-00-0000" # set the global variable to an invalid value
-	return "00-00-0000"
-
-func get_photo_creator() -> String:
-	# update the photo to make sure all info is correct before returning it
-	return ""
-
-func set_photo_creator(new_photo_creator: String) -> void:
-	if new_photo_creator.length() > 0:
-		#photo_creator = new_photo_creator
-		print("photo_creator set for ", photo_url)
-	else:
-		print("Failed to set photo_creator for ", photo_url)
-
-func get_existing_photo_ids() -> Array:
-	
-	# list we will update with all the existing photo ids to see if a photo exists in the database
-	var query = SupabaseQuery.new().from("photo").select(["photo_id"])
-	var response = await Supabase.database.query(query)
-	
-	if response.success:
-		var photo_ids = []
-		for record in response.data:
-			photo_ids.append(record.photo_id)
-		return photo_ids
-	
-	return []
-
-func get_existing_photo_urls() -> Array:
-	
-	# list we will update with all the existing photo ids to see if a photo exists in the database
-	var query = SupabaseQuery.new().from("photo").select(["photo_url"])
-	var response = await Supabase.database.query(query)
-	
-	if response.success:
-		var photo_urls = []
-		for record in response.data:
-			photo_urls.append(record.photo_url)
-		return photo_urls
-	
-	return []
-
+# delete this photo
 func delete() -> void:
 	return
