@@ -7,37 +7,26 @@ extends Node
 # also, make it so there's a function in photo manager that loops and creates all the photos in a global list. You don't need
 # a dictionary because photos have Id's and stuff, or maybe you can use the id as the dictionary key? 
 
-# make a way for the photo manager to create objects and insert the values. Get's list from database? 
-
-# will add and update function do the same thing? 
-
 # global variables of the photo with default values
-var id: int = -1 # unique
+var id: int = -1 # primary, unique
 var url: String = "no_url" # unique
 var creator: int = -1 
 var date_created: String = "no_date" # nullable
 var tags: Array = [39909] # nullable
 
-# methods that work
-# add_to_database()
-# calculate_date()
-# getter methods
-# setter methods
-# delete_self_from_database()
-
 func _ready() -> void:
 	
-	await add_to_database("testURL_afterSetMethod", 78915, [2, 3, 4])
+	await update_self_in_database("testURL_afterSetMethod", 78915, [2, 3, 4])
 
 
-func add_to_database(add_url: String, add_creator: int, add_tags: Array) -> void:
+func update_self_in_database(add_url: String, add_creator: int, add_tags: Array) -> void:
 	
-	# NOTE photo_id is decided by the database
-	# date is determined by day photo is added to the database
-	# verified_photo_tags is decided later
+	# NOTE if this photo is not in the database, then it will be added
+	# NOTE id is decided by the database
+	# NOTE date is determined by day photo is added to the database
+	# NOTE verified_photo_tags is decided later
 	
 	# setting the global variables of this scene
-	# photo id is set by the databa se
 	url = add_url
 	date_created = calculate_date()
 	creator = add_creator
@@ -45,7 +34,6 @@ func add_to_database(add_url: String, add_creator: int, add_tags: Array) -> void
 	
 	var query = SupabaseQuery.new().from("photo").insert([
 		{
-			# don't set the photo_id because the database does that
 			"url": url,
 			"creator": creator,
 			"date_created": date_created,
@@ -232,11 +220,11 @@ func calculate_date() -> String:
 	return month + "-" + day + "-" + year
 
 # delete this photo from the database
-func delete_self_from_database() -> void:
+func remove_self_from_database() -> void:
 	
 	# check to see if the id holds a value
 	if id == -1:
-		print("photo.id not set, so the photo can't be deleted.")
+		print("photo.id not set, so this photo can't be deleted.")
 		return
 	
 	var query = SupabaseQuery.new().from("photo").delete().eq("id", str(id))

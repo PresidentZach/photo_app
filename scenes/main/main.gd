@@ -6,7 +6,8 @@ func _ready():
 	database_connection_test()
 	
 	# create a test photo scene
-	create_scene("res://scenes/photo/photo.tscn")
+	#create_scene("res://scenes/photo/photo.tscn")
+	create_scene("res://scenes/tag/tag.tscn")
 
 func database_connection_test() -> bool:
 	
