@@ -1,5 +1,11 @@
 from datetime import datetime
-from supabase_client import supabase  # adjust import if needed
+from .supabase_client import supabase
+from dotenv import load_dotenv
+
+import base64
+import requests
+import json
+import os
 
 def insert_photo():
     # Example test photo data
@@ -18,3 +24,51 @@ def insert_photo():
 
 if __name__ == "__main__":
     insert_photo()
+
+def get_tags(image):
+    # Reading the content of the image
+    image_content = image.read()
+
+    # Converting to base64
+    base64_image = base64.b64encode(image_content).decode('utf-8')
+
+    # Defining labels that the AI model can use for tags
+    candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+
+    # URL to call API
+    url = "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32"
+
+    # Body of the API call
+    payload = json.dumps({
+        "inputs": base64_image,
+        "parameters": {
+            "candidate_labels": candidateLabels
+        }
+    })
+
+    # Loading .env file to get the API key
+    load_dotenv()
+
+    # Extracting the api key from the .env file
+    api_key = os.getenv("HUGGING_FACE_API_KEY")
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f"Bearer {api_key}"
+    }
+
+    # Getting the response from the AI model
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    # Converting the response to a python dictionary
+    json_response = response.json()
+
+    # Initializing lists for the labels as well as the scores
+    labels_list = []
+    score_list = []
+
+    for tag in json_response:
+        labels_list.append(tag.get('label'))
+        score_list.append(tag.get('score'))
+    print(f"labels: ", labels_list)
+    print(f"scores:", score_list)
