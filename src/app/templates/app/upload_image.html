@@ -15,11 +15,15 @@
 
         <h2>Tags:</h2>
         <ul>
-            {% for tag, score in tags %}
-                <li>{{ tag }}, Score: {{ score }}</li>
+            {% for image_data in images_data %}
+                <li><strong>{{ image_data.name }}</strong></li>
+                <ul>
+                    {% for tag, score in image_data.tags_and_scores %}
+                        <li>{{ tag }} - Score: {{ score }}</li>
+                    {% endfor %}
+                </ul>
             {% endfor %}
         </ul>
-        
     {% endif %}
 </body>
 

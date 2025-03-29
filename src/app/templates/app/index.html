@@ -11,7 +11,7 @@
 		{% csrf_token %}
         <label for="photoUpload">Upload Photos:</label>
         <br></br>
-		<input type="file" name="image" accept="image/*" required>
+		<input type="file" name="image" accept="image/png, image/jpeg, image/jpg" multiple required>
         <br></br>
 		<button type="submit">Upload</button>
 	</form>
