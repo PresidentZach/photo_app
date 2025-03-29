@@ -64,11 +64,13 @@ def get_tags(image):
     json_response = response.json()
 
     # Initializing lists for the labels as well as the scores
-    labels_list = []
+    tags_list = []
     score_list = []
 
     for tag in json_response:
-        labels_list.append(tag.get('label'))
+        tags_list.append(tag.get('label'))
         score_list.append(tag.get('score'))
-    print(f"labels: ", labels_list)
-    print(f"scores:", score_list)
+    #print(f"labels: ", tags_list)
+    #print(f"scores:", score_list)
+
+    return tags_list, score_list

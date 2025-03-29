@@ -12,6 +12,14 @@
         <p style="color: red;">{{ error }}</p>
     {% else %}
         <p>Image was uploaded</p>
+
+        <h2>Tags:</h2>
+        <ul>
+            {% for tag, score in tags %}
+                <li>{{ tag }}, Score: {{ score }}</li>
+            {% endfor %}
+        </ul>
+        
     {% endif %}
 </body>
 

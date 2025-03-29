@@ -18,8 +18,16 @@ def upload_image(request):
         if image.content_type not in ["image/jpeg", "image/png", "image/jpg"]:
             return render(request, "app/upload_image.html", {"error": "Incorrect file type. "
             "Please enter a .jpeg, .jpg, or .png image"})
-        get_tags(image)
+        tags, scores = get_tags(image)
+        print(f"tags: ", tags)
+        print(f"scores: ", scores)
+
+        tags_and_scores = zip(tags, scores)
+
+        context = {
+            'tags': tags_and_scores
+        }
 
         
     # If no errors, render upload_image.html
-    return render(request, "app/upload_image.html")
+    return render(request, "app/upload_image.html", context=context)
