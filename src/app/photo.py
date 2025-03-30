@@ -14,6 +14,7 @@ class Photo:
         self.creator = creator
         self.date_created = self.calculate_date()
         self.tags = tags if tags else [39909]
+        self.get_id()
 
     def calculate_date(self):
         # Format: "MM-DD-YYYY"
@@ -166,4 +167,8 @@ def get_tags(image):
     print("photo.id: ", photo.get_id()) # correct :)
     '''
     
+    photo.set_url("new_url_test")
+    photo.set_creator(12345678910)
+    photo.set_tags([857, 857, 857])
+
     photo.print_info()
