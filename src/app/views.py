@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from app.classes.photo import get_tags
+from app.classes.photo import Photo
+from app.classes.tag import Tag
+
+from app.classes.photo import get_tags # temporary line until we implement this method in the photo class
 
 def index(request):
     return render(request, 'app/index.html')

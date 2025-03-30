@@ -14,7 +14,8 @@ class Photo:
         self.creator = creator
         self.date_created = self.calculate_date()
         self.tags = tags if tags else [39909]
-        self.get_id()
+        if self.id == -1:
+            self.get_id()
 
     def calculate_date(self):
         # Format: "MM-DD-YYYY"
