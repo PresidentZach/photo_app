@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
 
-from app.classes.photo import get_tags # temporary line until we implement this method in the photo class
 
 def index(request):
     return render(request, 'app/index.html')
@@ -30,7 +29,7 @@ def upload_image(request):
                 return render(request, "app/upload_image.html", {"error": "Incorrect file type. "
                 "Please enter a .jpeg, .jpg, or .png image"})
             
-            tags, scores = get_tags(image)
+            tags, scores = Photo.generate_tags(image)
             print(f"tags: ", tags)
             print(f"scores: ", scores)
 
