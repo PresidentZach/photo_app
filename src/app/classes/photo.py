@@ -1,4 +1,4 @@
-from .supabase_client import supabase
+from supabase_client import supabase
 from datetime import datetime
 from dotenv import load_dotenv
 

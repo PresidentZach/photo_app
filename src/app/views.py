@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .photo import get_tags
+from classes.photo import get_tags
 
 def index(request):
     return render(request, 'app/index.html')
@@ -30,8 +30,6 @@ def upload_image(request):
             tags, scores = get_tags(image)
             print(f"tags: ", tags)
             print(f"scores: ", scores)
-
-            tags_and_scores = zip(tags, scores)
 
             image_data = {
                 "name": image.name,
