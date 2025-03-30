@@ -105,71 +105,50 @@ class Photo:
         except Exception as e:
             print("Error deleting photo:", e)
 
-def get_tags(image):
-    # Reading the content of the image
-    image_content = image.read()
+    def generate_tags(image):
+        # Reading the content of the image
+        image_content = image.read()
 
-    # Converting to base64
-    base64_image = base64.b64encode(image_content).decode('utf-8')
+        # Converting to base64
+        base64_image = base64.b64encode(image_content).decode('utf-8')
 
-    # Defining labels that the AI model can use for tags
-    candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+        # Defining labels that the AI model can use for tags
+        candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
 
-    # URL to call API
-    url = "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32"
+        # URL to call API
+        url = "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32"
 
-    # Body of the API call
-    payload = json.dumps({
-        "inputs": base64_image,
-        "parameters": {
-            "candidate_labels": candidateLabels
+        # Body of the API call
+        payload = json.dumps({
+            "inputs": base64_image,
+            "parameters": {
+                "candidate_labels": candidateLabels
+            }
+        })
+
+        # Loading .env file to get the API key
+        load_dotenv()
+
+        # Extracting the api key from the .env file
+        api_key = os.getenv("HUGGING_FACE_API_KEY")
+
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f"Bearer {api_key}"
         }
-    })
 
-    # Loading .env file to get the API key
-    load_dotenv()
+        # Getting the response from the AI model
+        response = requests.request("POST", url, headers=headers, data=payload)
 
-    # Extracting the api key from the .env file
-    api_key = os.getenv("HUGGING_FACE_API_KEY")
+        # Converting the response to a python dictionary
+        json_response = response.json()
 
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f"Bearer {api_key}"
-    }
+        # Initializing lists for the labels as well as the scores
+        tags_list = []
+        score_list = []
 
-    # Getting the response from the AI model
-    response = requests.request("POST", url, headers=headers, data=payload)
+        for tag in json_response:
+            tags_list.append(tag.get('label'))
+            score_list.append(tag.get('score'))
 
-    # Converting the response to a python dictionary
-    json_response = response.json()
-
-    # Initializing lists for the labels as well as the scores
-    tags_list = []
-    score_list = []
-
-    for tag in json_response:
-        tags_list.append(tag.get('label'))
-        score_list.append(tag.get('score'))
-    #print(f"labels: ", tags_list)
-    #print(f"scores:", score_list)
-
-    return tags_list, score_list
-
-    # example of creating a photo object
-    #             url of the photo          creator id        tag id array
-    photo = Photo("testURL_afterSetMethod", "78915398457983", [2, 3, 4])
-
-    photo.insert_into_database()
-
-    '''
-    NOTE: While you technically CAN get the photo id using photo.id, please
-    use photo.get_id(), which will properly fetch from the database. 
-    print(photo.id) # incorrect! Just get's the id value in the photo class and not from the database.
-    print("photo.id: ", photo.get_id()) # correct :)
-    '''
-    
-    photo.set_url("new_url_test")
-    photo.set_creator(12345678910)
-    photo.set_tags([857, 857, 857])
-
-    photo.print_info()
+        return tags_list, score_list
