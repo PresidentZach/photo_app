@@ -105,7 +105,7 @@ class Photo:
         except Exception as e:
             print("Error deleting photo:", e)
 
-    def generate_tags(image):
+    def generate_tags(self, image):
         # Reading the content of the image
         image_content = image.read()
 

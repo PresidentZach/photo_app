@@ -24,12 +24,14 @@ def upload_image(request):
 
         for image in images:
 
+            im = Photo(image)
+
             # If the file type is incorrect
             if image.content_type not in ["image/jpeg", "image/png", "image/jpg"]:
                 return render(request, "app/upload_image.html", {"error": "Incorrect file type. "
                 "Please enter a .jpeg, .jpg, or .png image"})
             
-            tags, scores = Photo.generate_tags(image)
+            tags, scores = im.generate_tags(image)
             print(f"tags: ", tags)
             print(f"scores: ", scores)
 
