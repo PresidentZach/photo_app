@@ -3,6 +3,8 @@
 import os
 import sys
 
+from app.classes.user import *
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
@@ -18,4 +20,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    # create_new_user("zachstofko@proton.me", "Legorock12@")
+    
+    user_login("zachstofko@proton.me", "Legorock12@")
+    True

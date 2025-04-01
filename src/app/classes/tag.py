@@ -1,4 +1,4 @@
-from ..supabase_client import supabase
+from app.supabase_client import supabase
 
 class Tag:
     def __init__(self, name: str, id: int = -1):
