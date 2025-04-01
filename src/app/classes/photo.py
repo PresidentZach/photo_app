@@ -105,7 +105,7 @@ class Photo:
         except Exception as e:
             print("Error deleting photo:", e)
 
-    def generate_tags(image):
+    def generate_tags(self, image):
         # Reading the content of the image
         image_content = image.read()
 
@@ -152,3 +152,38 @@ class Photo:
             score_list.append(tag.get('score'))
 
         return tags_list, score_list
+    
+    def generate_url(self, image):
+        # URL for Imgur image upload
+        url = "https://api.imgur.com/3/image"
+
+        load_dotenv()
+
+        imgur_api_key = os.getenv("IMGUR_API_KEY")
+
+        # Setting up our authorization parameter
+        headers = {
+            'Authorization': 'Client-ID ' + imgur_api_key
+        }
+
+        try:
+            # Setting up the files parameter for the API call
+            files = [
+                ('image', (image.name, image, image.content_type))
+            ]
+
+            # Make the POST request to upload the image
+            response = requests.post(url, headers=headers, files=files)
+
+            # Check the response status and print the result
+            if response.status_code == 200:
+                image_url = response.json()['data']['link']
+                return image_url
+            else:
+                print("Failed to upload image. Response:", response.status_code, response.text)
+                return
+        except FileNotFoundError:
+            print(f"Error: File not found.")
+        except Exception as e:
+            print(f"Error: {str(e)}")
+
