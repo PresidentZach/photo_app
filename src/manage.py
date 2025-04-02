@@ -24,4 +24,4 @@ if __name__ == '__main__':
     # create_new_user("zachstofko@proton.me", "Legorock12@")
     
     user_login("zachstofko@proton.me", "Legorock12@")
-    True
+    print(get_current_user_id())

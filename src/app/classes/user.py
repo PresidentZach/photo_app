@@ -31,3 +31,12 @@ def user_login(email="", password=""):
 
 def user_signout():
     response = supabase.auth.sign_out()
+
+def get_current_user_id():
+    response = supabase.auth.get_user()
+    if response and response.user:
+        return response.user.id
+    return None
+
+def get_current_user_display_name():
+    True
