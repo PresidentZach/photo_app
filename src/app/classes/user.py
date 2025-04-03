@@ -38,5 +38,8 @@ def get_current_user_id():
         return response.user.id
     return None
 
-def get_current_user_display_name():
-    True
+def get_current_user_email():
+    response = supabase.auth.get_user()
+    if response and response.user:
+        return response.user.email
+    return None
