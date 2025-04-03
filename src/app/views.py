@@ -3,6 +3,14 @@ from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
 
+import requests
+import os
+
+
+"""
+No separate user class needed because we don't
+store user information and there's only one user at one time.
+"""
 
 def index(request):
     return render(request, 'app/index.html')
