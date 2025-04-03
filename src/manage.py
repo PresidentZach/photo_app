@@ -16,13 +16,16 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    execute_from_command_line(sys.argv)
-
-
-if __name__ == '__main__':
-    # main()
-    # create_new_user("zachstofko@proton.me", "Legorock12@")
     
     user_login("zachstofko@proton.me", "Legorock12@")
     print(get_current_user_id())
     print(get_current_user_email())
+
+    execute_from_command_line(sys.argv)
+
+
+if __name__ == '__main__':
+    main()
+    # create_new_user("zachstofko@proton.me", "Legorock12@")
+    
+    
