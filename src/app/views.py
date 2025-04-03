@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
+from app.classes.user import get_current_user_id
 
 import requests
 import os
@@ -59,9 +60,9 @@ def upload_image(request):
                 tags = ' '
                 scores = ' '
             '''
-            #tags, scores = im.generate_tags(image)
-            tags = ' '
-            scores = ' '
+            tags, scores = im.generate_tags(image)
+            #tags = ' '
+            #scores = ' '
 
             # Adding name, url, tags, and scores to image_data
             image_data = {
@@ -70,13 +71,25 @@ def upload_image(request):
                 "tags_and_scores": zip(tags, scores)
             }
 
-            # for tag in tags:
-            #     t = Tag(tag)
-            #     t.insert_into_database()
-            #     print(t.get_id)
+            # Initializing the tags array
+            tag_ids = []
+            # Inserting tags into the database
+            # We only want to store the top 3 tags
+            for tag in tags[:3]:
+                t = Tag(tag)
+                t.insert_into_database()
+                tag_ids.append(t.get_id())
 
             # Adding image data for each image to context
             context["images_data"].append(image_data)
+
+            # Getting the creator's id
+            creator = get_current_user_id()
+
+            # Inserting tags into the database
+            i = Photo(url=image_url, creator=creator, tags=tag_ids)
+            i.insert_into_database()
+
 
         
     # If no errors, render upload_image.html
