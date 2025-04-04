@@ -14,14 +14,12 @@ store user information and there's only one user at one time.
 """
 
 def index(request):
-    return render(request, 'app/index.html')
-
-def upload_image(request):
+    context = {}
     if request.method == "POST":
 
         # If there is no file selected
         if not request.FILES.get("image"):
-            return render(request, "app/upload_image.html", {"error": "No file selected. Please upload an image."})
+            return render(request, "app/index.html", {"error": "No file selected. Please upload an image."})
         
         # Getting all the images
         images = request.FILES.getlist('image')
@@ -37,7 +35,7 @@ def upload_image(request):
 
             # If the file type is incorrect
             if image.content_type not in ["image/jpeg", "image/png", "image/jpg"]:
-                return render(request, "app/upload_image.html", {"error": "Incorrect file type. "
+                return render(request, "app/index.html", {"error": "Incorrect file type. "
                 "Please enter a .jpeg, .jpg, or .png image"})
 
             # Calling the generate_url function in the Photo class to get the imgur url
@@ -45,7 +43,7 @@ def upload_image(request):
 
             # If the image_url is not generated
             if not image_url:
-                return render(request, "app/upload_image.html", {"error": "URL not generated"})
+                return render(request, "app/index.html", {"error": "URL not generated"})
             
             # Returning the pointer to the beginning of the photo
             image.seek(0)
@@ -89,8 +87,6 @@ def upload_image(request):
             # Inserting tags into the database
             i = Photo(url=image_url, creator=creator, tags=tag_ids)
             i.insert_into_database()
-
-
         
     # If no errors, render upload_image.html
-    return render(request, "app/upload_image.html", context=context)
+    return render(request, "app/index.html", context=context)
