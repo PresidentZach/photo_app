@@ -75,7 +75,6 @@ def index(request):
             # We only want to store the top 3 tags
             for tag in tags[:3]:
                 t = Tag(tag)
-                t.insert_into_database()
                 tag_ids.append(t.get_id())
 
             # Adding image data for each image to context
