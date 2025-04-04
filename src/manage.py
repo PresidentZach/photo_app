@@ -25,4 +25,4 @@ if __name__ == '__main__':
     
     user_login("zachstofko@proton.me", "Legorock12@")
     print(get_current_user_id())
-    print(get_current_user_email())
+    print_photo_ids(get_current_user_email())
