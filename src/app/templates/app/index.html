@@ -7,7 +7,7 @@
 
 <body>
     <!--Creating a form. When upload button is pressed, upload_image(request) in views.py is ran-->
-    <form method="POST" enctype="multipart/form-data" action="{% url 'upload_image' %}">
+    <form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
 		{% csrf_token %}
         <label for="photoUpload">Upload Photos:</label>
         <br></br>
@@ -15,6 +15,24 @@
         <br></br>
 		<button type="submit">Upload</button>
 	</form>
+
+    <h2>Upload Status</h2>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+        <h2>Tags:</h2>
+        <ul>
+            {% for image_data in images_data %}
+                <li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
+                <ul>
+                    {% for tag, score in image_data.tags_and_scores %}
+                        <li>{{ tag }} - Score: {{ score }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </body>
 
 
