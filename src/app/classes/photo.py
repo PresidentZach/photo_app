@@ -140,6 +140,11 @@ class Photo:
         # Getting the response from the AI model
         response = requests.request("POST", url, headers=headers, data=payload)
 
+        # If the API does not work
+        if response.status_code != 200:
+            print(response)
+            return
+
         # Converting the response to a python dictionary
         json_response = response.json()
 

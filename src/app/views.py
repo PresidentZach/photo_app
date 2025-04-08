@@ -59,8 +59,11 @@ def index(request):
                 scores = ' '
             '''
             tags, scores = im.generate_tags(image)
-            #tags = ' '
-            #scores = ' '
+            #tags = 'Example'
+            #scores = 'Example'
+
+            if not tags and not scores:
+                return render(request, "app/index.html", {"error": "AI model was unable to generate tags. Please try again."})
 
             # Adding name, url, tags, and scores to image_data
             image_data = {
@@ -82,6 +85,10 @@ def index(request):
 
             # Getting the creator's id
             creator = get_current_user_id()
+            
+            if creator is None:
+                print("Creator not found, ")
+                creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
 
             # Inserting tags into the database
             i = Photo(url=image_url, creator=creator, tags=tag_ids)
