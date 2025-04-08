@@ -20,9 +20,9 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     
-    user_login("zachstofko@proton.me", "Legorock12@")
-    print(get_current_user_id())
-    print(get_current_user_email())
+    # user_login("zachstofko@proton.me", "Legorock12@")
+    # print(get_current_user_id())
+    # print(get_current_user_email())
 
     execute_from_command_line(sys.argv)
 
