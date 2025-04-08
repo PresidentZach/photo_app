@@ -7,9 +7,8 @@ import requests
 import json
 import os
 
-from app.classes.user import *
-
-#will need to create 
+from app.globals import * # global constant variables
+from app.classes.user import * # user class
 
 class Photo:
     def __init__(self, url="no_url", creator="no_creator", tags=None):
@@ -163,6 +162,24 @@ class Photo:
 
         return tags_list, score_list
     
+    def add_tag(self, add_tag_id):
+        if add_tag_id in self.tags:
+            print(f"Tag {add_tag_id} already exists.")
+            return
+        if len(self.tags) >= MAX_TAGS_PER_PHOTO:
+            print(f"Cannot add tag {add_tag_id}: max tags limit ({MAX_TAGS_PER_PHOTO}) reached.")
+            return
+        self.tags.append(add_tag_id)
+        self.set_tags(self.tags)
+
+    def remove_tag(self, remove_tag_id):
+        if remove_tag_id not in self.tags:
+            print(f"Tag {remove_tag_id} not found.")
+            return
+        self.tags.remove(remove_tag_id)
+        self.set_tags(self.tags)
+        print(f"Removed tag {remove_tag_id}.")
+
     def generate_url(self, image):
         # URL for Imgur image upload
         url = "https://api.imgur.com/3/image"
