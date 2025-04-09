@@ -8,6 +8,9 @@ import json
 import os
 import time
 
+from app.globals import * # global constant variables
+from app.classes.user import * # user class
+
 class Photo:
     def __init__(self, url="no_url", creator="no_creator", tags=None):
         self.id = -1
@@ -114,7 +117,8 @@ class Photo:
         base64_image = base64.b64encode(image_content).decode('utf-8')
 
         # Defining labels that the AI model can use for tags
-        candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+        # candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+        candidateLabels = get_user_tags_available()
 
         # URL to call API
         url = "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32"
@@ -169,6 +173,24 @@ class Photo:
 
         
     
+    def add_tag(self, add_tag_id):
+        if add_tag_id in self.tags:
+            print(f"Tag {add_tag_id} already exists.")
+            return
+        if len(self.tags) >= MAX_TAGS_PER_PHOTO:
+            print(f"Cannot add tag {add_tag_id}: max tags limit ({MAX_TAGS_PER_PHOTO}) reached.")
+            return
+        self.tags.append(add_tag_id)
+        self.set_tags(self.tags)
+
+    def remove_tag(self, remove_tag_id):
+        if remove_tag_id not in self.tags:
+            print(f"Tag {remove_tag_id} not found.")
+            return
+        self.tags.remove(remove_tag_id)
+        self.set_tags(self.tags)
+        print(f"Removed tag {remove_tag_id}.")
+
     def generate_url(self, image):
         # URL for Imgur image upload
         url = "https://api.imgur.com/3/image"

@@ -7,11 +7,7 @@ from app.classes.user import get_current_user_id
 import requests
 import os
 
-
-"""
-No separate user class needed because we don't
-store user information and there's only one user at one time.
-"""
+from app.globals import * # global constant variables
 
 def index(request):
     context = {}
@@ -76,7 +72,7 @@ def index(request):
             tag_ids = []
             # Inserting tags into the database
             # We only want to store the top 3 tags
-            for tag in tags[:3]:
+            for tag in tags[:MAX_TAGS_PER_PHOTO]:
                 t = Tag(tag)
                 tag_ids.append(t.get_id())
 
