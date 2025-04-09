@@ -145,6 +145,7 @@ class Photo:
         # Therefore, we will try 3 times to see if it works
         while response.status_code != 200 and api_counter < 3:
             response = requests.request("POST", url, headers=headers, data=payload)
+            api_counter += 1
         
         # If it hasn't worked after 3 calls, then return nothing
         # This is handeled in views.py
