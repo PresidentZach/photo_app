@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
-from app.classes.user import get_current_user_id
+from app.classes.user import User
 
 import requests
 import os
@@ -80,7 +80,8 @@ def index(request):
             context["images_data"].append(image_data)
 
             # Getting the creator's id
-            creator = get_current_user_id()
+            c = User()
+            creator = c.get_id()
             
             if creator is None:
                 print("Creator not found, ")

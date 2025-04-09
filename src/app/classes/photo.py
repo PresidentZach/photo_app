@@ -117,8 +117,8 @@ class Photo:
         base64_image = base64.b64encode(image_content).decode('utf-8')
 
         # Defining labels that the AI model can use for tags
-        # candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
-        candidateLabels = get_user_tags_available()
+        candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+        # candidateLabels = get_user_tags_available()
 
         # URL to call API
         url = "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32"
