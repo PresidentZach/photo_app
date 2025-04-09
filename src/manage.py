@@ -3,7 +3,10 @@
 import os
 import sys
 
+# libraries for testing. Remove afterwords
 from app.classes.user import *
+from app.classes.tag import *
+from app.classes.photo import *
 
 def main():
     """Run administrative tasks."""
@@ -27,5 +30,6 @@ def main():
 if __name__ == '__main__':
     main()
     # create_new_user("zachstofko@proton.me", "Legorock12@")
-    
-    
+    tag = Tag("test_tag_April3_2025_3")
+    tag.insert_into_database()
+    tag.get_id()

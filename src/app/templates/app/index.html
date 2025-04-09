@@ -1,39 +1,93 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <html lang="en">
-    <meta charset="UTF-8">
-    <title>Index.html page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhotoSynthesis</title>
+  {% load static %}
+ <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
-
 <body>
-    <!--Creating a form. When upload button is pressed, upload_image(request) in views.py is ran-->
-    <form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
-		{% csrf_token %}
-        <label for="photoUpload">Upload Photos:</label>
-        <br></br>
-		<input type="file" name="image" accept="image/png, image/jpeg, image/jpg" multiple required>
-        <br></br>
-		<button type="submit">Upload</button>
-	</form>
 
-    <h2>Upload Status</h2>
+  <!-- Top bar with logo and logout -->
+  <header>
+    <div class="logo">PhotoSynthesis</div>
+    <div class="account">
+      <a href="#">Logout</a> <!-- Only logout is shown now -->
+    </div>
+  </header>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% else %}
-        <h2>Tags:</h2>
-        <ul>
-            {% for image_data in images_data %}
-                <li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
-                <ul>
-                    {% for tag, score in image_data.tags_and_scores %}
-                        <li>{{ tag }} - Score: {{ score }}</li>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
-        </ul>
-    {% endif %}
+  <div class="main">
+    <nav>
+      <!-- Sidebar with search and links -->
+      <div class="search-bar">
+        <input type="text" placeholder="Search...">
+      </div>
+      <ul>
+        <li>* Favorites</li>
+        <li> Tags</li>
+        <li> Upload</li> <!-- Only keeping needed links -->
+      </ul>
+
+      <!-- Upload area -->
+      <div class="upload-area">
+	  
+         <!--Creating a form. When upload button is pressed, upload_image(request) in views.py is ran-->
+		<form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
+			{% csrf_token %}
+				<label for="photoUpload">Upload Photos:</label>
+					<br></br>
+				<input type="file" name="image" accept="image/png, image/jpeg, image/jpg" multiple required>
+					<br></br>
+				<button type="submit">Upload</button>
+		</form>
+		
+		    <h2>Upload Status</h2>
+
+			{% if error %}
+				<p style="color: red;">{{ error }}</p>
+			{% else %}
+				<h2>Tags:</h2>
+				<ul>
+					{% for image_data in images_data %}
+						<li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
+						<ul>
+							{% for tag, score in image_data.tags_and_scores %}
+								<li>{{ tag }} - Score: {{ score }}</li>
+							{% endfor %}
+						</ul>
+					{% endfor %}
+				</ul>
+			{% endif %}
+      </div>
+	  
+	  
+	  
+    </nav>
+
+    <div class="content">
+      <h2>Photo Gallery</h2>
+      <!-- Flexbox Image Grid -->
+      <div class="image-grid">
+        <div class="image-box">Image 1</div>
+        <div class="image-box">Image 2</div>
+        <div class="image-box">Image 3</div>
+        <div class="image-box">Image 4</div>
+        <div class="image-box">Image 5</div>
+        <div class="image-box">Image 6</div>
+      </div>
+
+      <!-- Hidden area for photo details -->
+      <div class="image-detail hidden" id="image-detail">
+        <h3>Image Details</h3>
+        <div class="img-box">[Image]</div>
+        <div class="tags">Tags: person, dog, landscape</div>
+        <div class="description">
+          Description: A person with a dog in a forest setting, standing under trees.
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
-
-
 </html>
