@@ -140,9 +140,15 @@ class Photo:
         # Getting the response from the AI model
         response = requests.request("POST", url, headers=headers, data=payload)
 
-        # If the API does not work
+        api_counter = 0
+        # Sometimes, teh API does not work on the first call.
+        # Therefore, we will try 3 times to see if it works
+        while response.status_code != 200 and api_counter < 3:
+            response = requests.request("POST", url, headers=headers, data=payload)
+        
+        # If it hasn't worked after 3 calls, then return nothing
+        # This is handeled in views.py
         if response.status_code != 200:
-            print(response)
             return
 
         # Converting the response to a python dictionary
