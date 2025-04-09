@@ -6,6 +6,7 @@ import base64
 import requests
 import json
 import os
+import time
 
 from app.globals import * # global constant variables
 from app.classes.user import * # user class
@@ -141,26 +142,36 @@ class Photo:
             'Authorization': f"Bearer {api_key}"
         }
 
-        # Getting the response from the AI model
-        response = requests.request("POST", url, headers=headers, data=payload)
+        api_counter = 0
+        # Sometimes, teh API does not work on the first call.
+        # Therefore, we will try 3 times to see if it works
+        while api_counter < 3:
+            response = requests.request("POST", url, headers=headers, data=payload)
+            
+            if response.status_code == 200:
+                break
+            api_counter += 1
+            time.sleep(1)
+        
+        # Making sure that the response was sucessful
+        if response and response.status_code == 200:
+            # Converting the response to a python dictionary
+            json_response = response.json()
 
-        # If the API does not work
-        if response.status_code != 200:
-            print(response)
-            return
+            # Initializing lists for the labels as well as the scores
+            tags_list = []
+            score_list = []
 
-        # Converting the response to a python dictionary
-        json_response = response.json()
+            for tag in json_response:
+                tags_list.append(tag.get('label'))
+                score_list.append(tag.get('score'))
 
-        # Initializing lists for the labels as well as the scores
-        tags_list = []
-        score_list = []
+            return tags_list, score_list
+        
+        # If the response was not sucessful -> Return nothing (handled in views.py)
+        return
 
-        for tag in json_response:
-            tags_list.append(tag.get('label'))
-            score_list.append(tag.get('score'))
-
-        return tags_list, score_list
+        
     
     def add_tag(self, add_tag_id):
         if add_tag_id in self.tags:
