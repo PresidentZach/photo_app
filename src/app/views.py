@@ -93,3 +93,6 @@ def index(request):
         
     # If no errors, render upload_image.html
     return render(request, "app/index.html", context=context)
+
+def login(request):
+    return render(request, "app/login.html")
