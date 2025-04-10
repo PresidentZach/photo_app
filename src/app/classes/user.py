@@ -16,7 +16,7 @@ load_dotenv()
 
 from app.globals import *
 from app.supabase_client import supabase
-from app.classes.photo import *
+from app.classes.photo import Photo
 
 """
 NOTE: When a user signs up, they'll be sent an email where they have to verify their account. Until then, they 
