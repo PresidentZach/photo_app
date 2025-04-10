@@ -58,7 +58,7 @@ def index(request):
             #tags = 'Example'
             #scores = 'Example'
 
-            if not tags and not scores:
+            if tags == "None" and scores == "None":
                 return render(request, "app/index.html", {"error": "AI model was unable to generate tags. Please try again."})
 
             # Adding name, url, tags, and scores to image_data
