@@ -169,7 +169,7 @@ class Photo:
             return tags_list, score_list
         
         # If the response was not sucessful -> Return nothing (handled in views.py)
-        return
+        return "None", "None"
 
         
     
