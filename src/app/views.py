@@ -4,8 +4,6 @@ from app.classes.photo import Photo
 from app.classes.tag import Tag
 from app.classes.user import User
 
-import requests
-import os
 
 from app.globals import * # global constant variables
 
