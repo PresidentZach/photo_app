@@ -2,11 +2,14 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import base64
 
 # libraries for testing. Remove afterwords
 from app.classes.user import *
 from app.classes.tag import *
 from app.classes.photo import *
+
+
 
 def main():
     """Run administrative tasks."""
@@ -23,6 +26,46 @@ def main():
     # user_login("zachstofko@proton.me", "Legorock12@")
     # print(get_current_user_id())
     # print(get_current_user_email())
+
+    '''
+    For some reason, the first time the AI model's API is requested, it fails.
+    In order to fix this, we call the API with a sample image whenever the server starts.
+    '''
+
+    # For now I will comment this out in order to not use up credits.
+    # We will uncomment this when the project is finished.
+    '''
+    candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+
+    image_path = os.path.join(os.path.dirname(__file__), 'app', 'static', 'ep233.png')
+
+    with open(image_path, "rb") as image_file:
+        base64_image = base64.b64encode(image_file.read()).decode('utf-8')
+
+    # URL to call API
+    url = "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32"
+
+    # Body of the API call
+    payload = json.dumps({
+        "inputs": base64_image,
+        "parameters": {
+            "candidate_labels": candidateLabels
+        }
+    })
+
+    # Loading .env file to get the API key
+    load_dotenv()
+
+    # Extracting the api key from the .env file
+    api_key = os.getenv("HUGGING_FACE_API_KEY")
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f"Bearer {api_key}"
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+    '''
 
     execute_from_command_line(sys.argv)
 
