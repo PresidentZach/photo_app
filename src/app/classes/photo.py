@@ -116,8 +116,8 @@ class Photo:
         base64_image = base64.b64encode(image_content).decode('utf-8')
 
         # Defining labels that the AI model can use for tags
-        # candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
-        candidateLabels = get_user_tags_available()
+        candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+        # candidateLabels = get_user_tags_available()
 
         # URL to call API
         url = "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32"
@@ -141,26 +141,27 @@ class Photo:
             'Authorization': f"Bearer {api_key}"
         }
 
-        # Getting the response from the AI model
         response = requests.request("POST", url, headers=headers, data=payload)
+        
+        # Making sure that the response was sucessful
+        if response and response.status_code == 200:
+            # Converting the response to a python dictionary
+            json_response = response.json()
 
-        # If the API does not work
-        if response.status_code != 200:
-            print(response)
-            return
+            # Initializing lists for the labels as well as the scores
+            tags_list = []
+            score_list = []
 
-        # Converting the response to a python dictionary
-        json_response = response.json()
+            for tag in json_response:
+                tags_list.append(tag.get('label'))
+                score_list.append(tag.get('score'))
 
-        # Initializing lists for the labels as well as the scores
-        tags_list = []
-        score_list = []
+            return tags_list, score_list
+        
+        # If the response was not sucessful -> Return nothing (handled in views.py)
+        return "None", "None"
 
-        for tag in json_response:
-            tags_list.append(tag.get('label'))
-            score_list.append(tag.get('score'))
-
-        return tags_list, score_list
+        
     
     def add_tag(self, add_tag_id):
         if add_tag_id in self.tags:

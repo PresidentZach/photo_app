@@ -2,10 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
-from app.classes.user import get_current_user_id
+from app.classes.user import User
 
-import requests
-import os
 
 from app.globals import * # global constant variables
 
@@ -58,7 +56,7 @@ def index(request):
             #tags = 'Example'
             #scores = 'Example'
 
-            if not tags and not scores:
+            if tags == "None" and scores == "None":
                 return render(request, "app/index.html", {"error": "AI model was unable to generate tags. Please try again."})
 
             # Adding name, url, tags, and scores to image_data
@@ -80,7 +78,8 @@ def index(request):
             context["images_data"].append(image_data)
 
             # Getting the creator's id
-            creator = get_current_user_id()
+            c = User()
+            creator = c.get_id()
             
             if creator is None:
                 print("Creator not found, ")
@@ -92,3 +91,6 @@ def index(request):
         
     # If no errors, render upload_image.html
     return render(request, "app/index.html", context=context)
+
+def login(request):
+    return render(request, "app/login.html")
