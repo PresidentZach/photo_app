@@ -12,11 +12,13 @@ Users can upload photos, which are automatically tagged using AI via the Hugging
 - Favorite photos for quick access
 - User-specific photo collections (photos are tied to the uploading account)
 
+---
 
 ## Purpose
 
 This project was created as part of our Software Engineering course (CSIT 413) at SUNY Fredonia. It was designed to showcase our ability to plan, build, and deliver a complete web solution using Agile practices.
 
+---
 
 ## Resources We Used
 
@@ -30,6 +32,8 @@ This project was created as part of our Software Engineering course (CSIT 413) a
 - **Git & GitHub** – Version control and collaboration
 - **GitHub Projects (Kanban)** – Task management and Agile workflow tracking  
 
+---
+
 ## What We Learned
 
 - Working collaboratively in a team using Agile methodologies.
@@ -39,6 +43,7 @@ This project was created as part of our Software Engineering course (CSIT 413) a
 - Frontend / backend coordination for a smooth user experience.
 - Web development using Django. 
 
+---
 
 ## Team
 
