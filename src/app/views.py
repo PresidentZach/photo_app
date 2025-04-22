@@ -4,8 +4,6 @@ from app.classes.photo import Photo
 from app.classes.tag import Tag
 from app.classes.user import User
 
-import requests
-import os
 
 from app.globals import * # global constant variables
 
@@ -93,3 +91,6 @@ def index(request):
         
     # If no errors, render upload_image.html
     return render(request, "app/index.html", context=context)
+
+def login(request):
+    return render(request, "app/login.html")

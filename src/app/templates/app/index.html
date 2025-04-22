@@ -41,13 +41,15 @@
 					<br></br>
 				<button type="submit">Upload</button>
 		</form>
-		
+		{% if image_data %}
 		    <h2>Upload Status</h2>
+        <h2>Tags:</h2>
+    {% endif %}
 
 			{% if error %}
 				<p style="color: red;">{{ error }}</p>
 			{% else %}
-				<h2>Tags:</h2>
+				
 				<ul>
 					{% for image_data in images_data %}
 						<li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>

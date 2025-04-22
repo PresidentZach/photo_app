@@ -6,7 +6,6 @@ import base64
 import requests
 import json
 import os
-import time
 
 from app.globals import * # global constant variables
 from app.classes.user import * # user class
@@ -142,16 +141,7 @@ class Photo:
             'Authorization': f"Bearer {api_key}"
         }
 
-        api_counter = 0
-        # Sometimes, teh API does not work on the first call.
-        # Therefore, we will try 3 times to see if it works
-        while api_counter < 3:
-            response = requests.request("POST", url, headers=headers, data=payload)
-            
-            if response.status_code == 200:
-                break
-            api_counter += 1
-            time.sleep(1)
+        response = requests.request("POST", url, headers=headers, data=payload)
         
         # Making sure that the response was sucessful
         if response and response.status_code == 200:
