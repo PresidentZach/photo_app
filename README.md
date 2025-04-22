@@ -11,6 +11,13 @@ insert photosynthesis logo here
 This project was created as part of our Software Engineering course (CSIT 413) at SUNY Fredonia. It was designed to showcase our ability to plan, build, and deliver a complete web solution using Agile practices.
 
 
+## Resources We Used
+
+- Django
+- Supabase (Database)
+  With the limited time we had to complete the project, we chose to use Supabase as our database source as opposed to something like Azure or AWS because Supabase offers user authentication and hosting.
+- Imgur (Photo storage)
+
 ## What We Learned
 
 - Working collaboratively in a team using Agile methodologies.
