@@ -16,3 +16,13 @@ This project was created as part of our Software Engineering course (CSIT 413) a
 - Backend development with Django and API integration tools.
 - Utilizing Supabase for storage and authentication.
 - Frontend / backend coordination for a smooth user experience. 
+
+## Team
+
+**Backend Development:**
+- Zachary Stofko
+- Alex Scalcione
+
+**Frontend Development:**
+- Fio Rigney
+- Catherine Wisnieski
