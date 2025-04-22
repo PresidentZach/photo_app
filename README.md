@@ -26,10 +26,11 @@ This project was created as part of our Software Engineering course (CSIT 413) a
 ## What We Learned
 
 - Working collaboratively in a team using Agile methodologies.
-- Using Kanban for task traching and team coordination. 
+- Using Agile development methodologis for task traching and team coordination. 
 - Backend development with Django and API integration tools.
-- Utilizing Supabase for storage and authentication.
-- Frontend / backend coordination for a smooth user experience. 
+- Utilizing a database for information storage and user authentication.
+- Frontend / backend coordination for a smooth user experience.
+- Web development using Django. 
 
 
 ## Team
