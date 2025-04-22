@@ -16,7 +16,7 @@ load_dotenv()
 
 from app.globals import *
 from app.supabase_client import supabase
-from app.classes.photo import *
+from app.classes.photo import Photo
 
 """
 NOTE: When a user signs up, they'll be sent an email where they have to verify their account. Until then, they 
@@ -33,16 +33,25 @@ class User:
         response = supabase.auth.sign_up(
             { "email": email, "password": password, }
         )
+        if response: 
+            return True
+        return False
 
     def login(self, email="", password=""):
         response = supabase.auth.sign_in_with_password(
             { "email": email, "password": password, }
         )
-        self.fetch_photos() # updates the global list of photos
+        if response: 
+            self.fetch_photos() # updates the global list of photos
+            return True
+        return False
 
     def signout(self):
         response = supabase.auth.sign_out()
         global_user_photo_list = [] # clears the global list
+        if response: 
+            return True
+        return False
 
     def get_id(self):
         response = supabase.auth.get_user()

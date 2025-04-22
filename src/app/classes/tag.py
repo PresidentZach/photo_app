@@ -51,5 +51,3 @@ class Tag:
     def print_info(self):
         print(f"Tag ID: {self.id}")
         print(f"Tag Name: {self.name}")
-
-tag = Tag("test_tag")
