@@ -33,16 +33,25 @@ class User:
         response = supabase.auth.sign_up(
             { "email": email, "password": password, }
         )
+        if response: 
+            return True
+        return False
 
     def login(self, email="", password=""):
         response = supabase.auth.sign_in_with_password(
             { "email": email, "password": password, }
         )
-        self.fetch_photos() # updates the global list of photos
+        if response: 
+            self.fetch_photos() # updates the global list of photos
+            return True
+        return False
 
     def signout(self):
         response = supabase.auth.sign_out()
         global_user_photo_list = [] # clears the global list
+        if response: 
+            return True
+        return False
 
     def get_id(self):
         response = supabase.auth.get_user()
