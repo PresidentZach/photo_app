@@ -3,7 +3,14 @@ insert photosynthesis logo here
 # photo_app  
 *(Unofficially known as Photosynthesis)*
 a
-**photo_app** is a full-stack web application for uploading, viewing, and managing photos. Developed using Django and Supabase, it features secure user authentication, streamlined photo uploads, and structured gallery organization.
+**photo_app** is a full-stack web application for uploading, viewing, and managing photos. Developed using Django and Supabase, it features secure user authentication, streamlined photo uploads, and structured gallery organization. 
+
+Users can upload photos, which are automatically tagged using AI via the Hugging Face API. Photos are then sorted by these tags, enhancing the user's ability to find and manage images efficiently. Users can also manually add or remove tags as needed.
+
+### Notable Features not mentioned
+- Organize photos by upload date (ascending/descending)
+- Favorite photos for quick access
+- User-specific photo collections (photos are tied to the uploading account)
 
 
 ## Purpose
