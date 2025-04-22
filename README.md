@@ -8,3 +8,8 @@ insert photosynthesis logo here
 ## Purpose
 
 This project was created as part of our Software Engineering course (CSIT 413) at SUNY Fredonia. It was designed to showcase our ability to plan, build, and deliver a complete web solution using Agile practices.
+
+## What We Learned
+
+- Working collaboratively in a team using Agile methodologies.
+- Using Kanban for task traching and team coordination. 
