@@ -93,19 +93,23 @@ def index(request):
             i.insert_into_database()
         
     # If no errors, render upload_image.html
+
+       
+        # Take the current user class object (not available yet)
+
+        # Run fetch_photos(), which will return a list of photo objects
+        # (When we have the user class object, we'll filter the list of photos by the user/creator id.)
+
+        photo_list = User.fetch_photos()
+        url_list = []
+
+        # Loop through this list, for each item, return the url
+        for photo in photo_list:
+            url_list.append(Photo.get_url)
+            
+
     return render(request, "app/index.html", context=context)
 
-def display_photos(request):
-
-    # Take the current user class object (not available yet)
-
-
-    # Run fetch_photos(), which will return a list of photo objects
-    # (When we have the user class object, we'll filter the list of photos by the user/creator id.)
-
-    # Loop through this list, for each item, return the url
-     
-    return display_photos(request, "app/index.html")
 
 def login(request):
     return render(request, "app/login.html")
