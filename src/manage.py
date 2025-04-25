@@ -65,6 +65,7 @@ def main():
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
+    print("Sent image to hugging face")
     print("Response; ", response.text)
     '''
     execute_from_command_line(sys.argv)
