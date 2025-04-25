@@ -65,8 +65,8 @@ def main():
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
+    print("Response; ", response.text)
     '''
-
     execute_from_command_line(sys.argv)
 
 

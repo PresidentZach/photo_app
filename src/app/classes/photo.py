@@ -160,9 +160,6 @@ class Photo:
         
         # If the response was not sucessful -> Return nothing (handled in views.py)
         return "None", "None"
-
-        
-    
     def add_tag(self, add_tag_id):
         if add_tag_id in self.tags:
             print(f"Tag {add_tag_id} already exists.")
@@ -212,6 +209,8 @@ class Photo:
                 return
         except FileNotFoundError:
             print(f"Error: File not found.")
+            return
         except Exception as e:
             print(f"Error: {str(e)}")
+            return
 
