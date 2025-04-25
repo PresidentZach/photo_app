@@ -68,6 +68,7 @@ def index(request):
 
             # Initializing the tags array
             tag_ids = []
+
             # Inserting tags into the database
             # We only want to store the top 3 tags
             for tag in tags[:MAX_TAGS_PER_PHOTO]:
@@ -81,6 +82,8 @@ def index(request):
             c = User()
             creator = c.get_id()
             
+            # TODO: Make sure we actually get the creator ID
+            # Return error if we don't
             if creator is None:
                 print("Creator not found, ")
                 creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
