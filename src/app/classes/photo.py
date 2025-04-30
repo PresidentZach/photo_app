@@ -17,6 +17,7 @@ class Photo:
         self.creator = creator
         self.date_created = self.calculate_date()
         self.tags = tags if tags else [39909]
+        self.is_favorited = False # false on photo creation
         if self.id == -1:
             self.get_id()
 
@@ -160,6 +161,7 @@ class Photo:
         
         # If the response was not sucessful -> Return nothing (handled in views.py)
         return "None", "None"
+    
     def add_tag(self, add_tag_id):
         if add_tag_id in self.tags:
             print(f"Tag {add_tag_id} already exists.")
@@ -178,8 +180,15 @@ class Photo:
         self.set_tags(self.tags)
         print(f"Removed tag {remove_tag_id}.")
 
-    def favorite(self):
-        True
+    def is_favorited(self):
+        
+        # if currently true, set false
+        if self.is_favorited == True:
+            self._update_field("is_favorited", False)
+            return False # returned so ui can display unfavorited
+        else: # if currently false, set true
+            self._update_field("is_favorited", True)
+            return True
 
     def generate_url(self, image):
         # URL for Imgur image upload
