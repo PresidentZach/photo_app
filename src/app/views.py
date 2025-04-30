@@ -7,22 +7,6 @@ from app.classes.user import User
 
 from app.globals import * # global constant variables
 
-
-# debug code
-test_photo = Photo("www.idc.com", "1dc54ee6-40ae-4d61-afb8-09958b911574")
-test_photo.get_id()
-test_photo.insert_into_database()
-test_photo.get_id()
-
-#test_photo.set_is_favorited()
-test_photo.set_is_favorited()
-if test_photo.get_is_favorited():
-    print("True")
-else:
-    print("False")
-
-
-
 def index(request):
 
     context = {}
