@@ -150,7 +150,7 @@ nav li:hover {
 }
 
 /* Placeholder image inside details */
-.img-box {
+.thumb {
   width: 220px;
   height: 160px;
   background: #d9f2f2;
