@@ -17,6 +17,7 @@ class Photo:
         self.creator = creator
         self.date_created = self.calculate_date()
         self.tags = tags if tags else [39909]
+        self.is_favorited = False # false on photo creation
         if self.id == -1:
             self.get_id()
 
@@ -29,7 +30,8 @@ class Photo:
             "url": self.url,
             "creator": self.creator,
             "date_created": self.date_created,
-            "tags": self.tags
+            "tags": self.tags,
+            "is_favorited": self.is_favorited
         }
         try:
             result = supabase.table("photo").insert(data).execute()
@@ -59,6 +61,9 @@ class Photo:
 
     def get_tags(self):
         return self._fetch_field("tags")
+    
+    def get_is_favorited(self):
+        return self._fetch_field("is_favorited")
 
     def _fetch_field(self, field_name):
         if self.id == -1:
@@ -81,6 +86,20 @@ class Photo:
     def set_tags(self, new_tags):
         self._update_field("tags", new_tags)
 
+    def set_is_favorited(self):
+        
+        # check for older photos
+        if self._fetch_field("is_favorited") == None: # or Null
+            self._update_field("is_favorited", False)
+
+        # if currently true, set false
+        if self.is_favorited == True:
+            self._update_field("is_favorited", False)
+            return False # returned so ui can display unfavorited
+        else: # if currently false, set true
+            self._update_field("is_favorited", True)
+            return True
+
     def _update_field(self, field_name, new_value):
         if self.id == -1:
             print(f"photo.id not set, so photo.{field_name} cannot be set.")
@@ -97,6 +116,7 @@ class Photo:
         print("photo.creator: ", self.get_creator())
         print("photo.data_created: ", self.get_date_created())
         print("photo.tags: ", self.get_tags())
+        print("photo.is_favorited: ", self.get_is_favorited())
 
     def remove_from_database(self):
         if self.id == -1:
@@ -160,6 +180,7 @@ class Photo:
         
         # If the response was not sucessful -> Return nothing (handled in views.py)
         return "None", "None"
+    
     def add_tag(self, add_tag_id):
         if add_tag_id in self.tags:
             print(f"Tag {add_tag_id} already exists.")
@@ -213,4 +234,3 @@ class Photo:
         except Exception as e:
             print(f"Error: {str(e)}")
             return
-

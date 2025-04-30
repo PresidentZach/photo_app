@@ -8,6 +8,7 @@ from app.classes.user import User
 from app.globals import * # global constant variables
 
 def index(request):
+
     context = {}
     if request.method == "POST":
 
@@ -86,7 +87,10 @@ def index(request):
             # Return error if we don't
             if creator is None:
                 print("Creator not found, ")
-                creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
+
+                # TODO: Return error here
+
+                # creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
 
             # Inserting tags into the database
             i = Photo(url=image_url, creator=creator, tags=tag_ids)
