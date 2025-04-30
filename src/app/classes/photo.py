@@ -60,6 +60,9 @@ class Photo:
 
     def get_tags(self):
         return self._fetch_field("tags")
+    
+    def get_is_favorited(self):
+        return self._fetch_field("is_favorited")
 
     def _fetch_field(self, field_name):
         if self.id == -1:
@@ -82,6 +85,20 @@ class Photo:
     def set_tags(self, new_tags):
         self._update_field("tags", new_tags)
 
+    def set_is_favorited(self):
+        
+        # check for older photos
+        if self._fetch_field("is_favorited") == None: # or Null
+            self._update_field("is_favorited", False)
+
+        # if currently true, set false
+        if self.is_favorited == True:
+            self._update_field("is_favorited", False)
+            return False # returned so ui can display unfavorited
+        else: # if currently false, set true
+            self._update_field("is_favorited", True)
+            return True
+
     def _update_field(self, field_name, new_value):
         if self.id == -1:
             print(f"photo.id not set, so photo.{field_name} cannot be set.")
@@ -98,6 +115,7 @@ class Photo:
         print("photo.creator: ", self.get_creator())
         print("photo.data_created: ", self.get_date_created())
         print("photo.tags: ", self.get_tags())
+        print("photo.is_favorited: ", self.get_is_favorited())
 
     def remove_from_database(self):
         if self.id == -1:
@@ -180,20 +198,6 @@ class Photo:
         self.set_tags(self.tags)
         print(f"Removed tag {remove_tag_id}.")
 
-    def is_favorited(self):
-        
-        # check for older photos
-        if self.is_favorited == None: # or Null
-            self._update_field("is_favorited", False)
-
-        # if currently true, set false
-        if self.is_favorited == True:
-            self._update_field("is_favorited", False)
-            return False # returned so ui can display unfavorited
-        else: # if currently false, set true
-            self._update_field("is_favorited", True)
-            return True
-
     def generate_url(self, image):
         # URL for Imgur image upload
         url = "https://api.imgur.com/3/image"
@@ -229,4 +233,3 @@ class Photo:
         except Exception as e:
             print(f"Error: {str(e)}")
             return
-
