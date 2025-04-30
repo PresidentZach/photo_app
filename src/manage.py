@@ -66,12 +66,4 @@ def main():
 
 
 if __name__ == '__main__':
-
-    # debug code
-    test_photo = Photo()
-    test_photo.insert_into_database()
-
-    test_photo.set_is_favorited()
-    test_photo.set_is_favorited()
-
     main()

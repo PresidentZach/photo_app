@@ -30,7 +30,8 @@ class Photo:
             "url": self.url,
             "creator": self.creator,
             "date_created": self.date_created,
-            "tags": self.tags
+            "tags": self.tags,
+            "is_favorited": self.is_favorited
         }
         try:
             result = supabase.table("photo").insert(data).execute()
