@@ -182,6 +182,10 @@ class Photo:
 
     def is_favorited(self):
         
+        # check for older photos
+        if self.is_favorited == None:
+            self._update_field("is_favorited", False)
+
         # if currently true, set false
         if self.is_favorited == True:
             self._update_field("is_favorited", False)
