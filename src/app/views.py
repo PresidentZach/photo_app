@@ -68,6 +68,7 @@ def index(request):
 
             # Initializing the tags array
             tag_ids = []
+
             # Inserting tags into the database
             # We only want to store the top 3 tags
             for tag in tags[:MAX_TAGS_PER_PHOTO]:
@@ -81,6 +82,8 @@ def index(request):
             c = User()
             creator = c.get_id()
             
+            # TODO: Make sure we actually get the creator ID
+            # Return error if we don't
             if creator is None:
                 print("Creator not found, ")
                 creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
@@ -90,7 +93,24 @@ def index(request):
             i.insert_into_database()
         
     # If no errors, render upload_image.html
+
+       
+        # Take the current user class object (not available yet)
+
+        # Run fetch_photos(), which will return a list of photo objects
+        # (When we have the user class object, we'll filter the list of photos by the user/creator id.)
+        photo_object = User()
+        
+        photo_list = photo_object.fetch_photos()
+        url_list = []
+
+        # Loop through this list, for each item, return the url
+        for photo in photo_list:
+            url_list.append(Photo.get_url)
+            
+
     return render(request, "app/index.html", context=context)
+
 
 def login(request):
     return render(request, "app/login.html")
