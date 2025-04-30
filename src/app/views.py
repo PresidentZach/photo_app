@@ -99,8 +99,9 @@ def index(request):
 
         # Run fetch_photos(), which will return a list of photo objects
         # (When we have the user class object, we'll filter the list of photos by the user/creator id.)
-
-        photo_list = User.fetch_photos()
+        photo_object = User()
+        
+        photo_list = photo_object.fetch_photos()
         url_list = []
 
         # Loop through this list, for each item, return the url
