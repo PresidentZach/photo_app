@@ -178,6 +178,9 @@ class Photo:
         self.set_tags(self.tags)
         print(f"Removed tag {remove_tag_id}.")
 
+    def favorite(self):
+        True
+
     def generate_url(self, image):
         # URL for Imgur image upload
         url = "https://api.imgur.com/3/image"
