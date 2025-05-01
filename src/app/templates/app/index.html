@@ -7,7 +7,7 @@
   {% load static %}
  <link rel="stylesheet" href="{% static 'styles.css' %}">
  <script src="{% static 'index.js' %}"></script>
- <body onload="displayPhoto()">
+ <body onload="displayPhotos()">
 </head>
 <body>
 
@@ -72,15 +72,10 @@
     <div class="content">
       <h2>Photo Gallery</h2>
 
-      <!--temporary testing spot-->
-
-      <p id="test">test?</p>
 
       <!-- Flexbox Image Grid -->
       <div id = "grid" class="image-grid">
-
-           <div class="image-box">Image 1</div>
-
+         <!-- displayPhotos() fn populates this grid -->
       </div>
 
       <!-- Hidden area for photo details -->

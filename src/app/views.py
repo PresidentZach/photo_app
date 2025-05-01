@@ -111,6 +111,7 @@ def index(request):
         # Loop through this list, for each item, return the url
         for photo in photo_list:
             url_list.append(Photo.get_url)
+
             
 
     return render(request, "app/index.html", context=context)

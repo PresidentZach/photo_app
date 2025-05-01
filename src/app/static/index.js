@@ -1,22 +1,21 @@
 // Function to display urls fetched by url_list in views.py, and create a image_box element for each one
 
-function displayPhoto() {
+function displayPhotos() {
 
-    var photourls = "{{url_list}}";
-    const imagegrid = document.getElementById("grid");
-
+    // Somehow, we get the url_list array from views.py...
+   const imagegrid = document.getElementById("grid");
+   //var photourls = ??
+   
 
 // Loop through the photourls array, for each one create an image-box div 
-
-    for (let p = 0; p < photourls; p++ ) {
-        
-        //imgbox = document.createElement("div");
-        //imgbox.setAttribute("class", "image-box");
-        // create an img thumbnail inside with the src attribute of the current list item
-        //div.innerHTML = '<img class="thumb" src="'+ photourls[i]+ '"/></img>';
-        // add this div to image-grid
-        //imagegrid.appendChild(imgbox);
-    }
+// For now, it's just creating 5 divs
+   for (let p = 0; p < 5; p++ ) {
+    
+    imgbox = document.createElement("div");
+    imgbox.setAttribute("class", "image-box");
+    //imgbox.innerHTML = '<img src= "'+ photourls.[i]+'"></img>';
+    imagegrid.appendChild(imgbox);
+   }
 
 }
 
