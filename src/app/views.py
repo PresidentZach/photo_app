@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
 from app.classes.user import User
-import json
 
 from app.globals import * # global constant variables
 
@@ -98,25 +97,26 @@ def index(request):
         
     # If no errors, render upload_image.html
 
-       
+    return render(request, "app/index.html", context=context)
+
+def display(request):
         # Take the current user class object (not available yet)
 
         # Run fetch_photos(), which will return a list of photo objects
         # (When we have the user class object, we'll filter the list of photos by the user/creator id.)
+
+        context = {
+            "urls_list": []
+        }
         photo_object = User()
         
         photo_list = photo_object.fetch_photos()
         url_list = []
-
         # Loop through this list, for each item, return the url
         for photo in photo_list:
-            url_list.append(Photo.get_url)
+            context["url_list"].append(Photo.get_url)
 
-        context = {
-        'urls_list_json': json.dumps(url_list)
-        }
-
-    return render(request, "app/index.html", context=context)
+        return render(request, "app/index.html", context)
 
 
 def login(request):

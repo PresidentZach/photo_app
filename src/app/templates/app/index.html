@@ -75,7 +75,12 @@
 
       <!-- Flexbox Image Grid -->
       <div id = "grid" class="image-grid">
-         <!-- displayPhotos() fn populates this grid -->
+        <div class="image-box">test box</div>
+         <!-- populates this grid w/ urls from url_list-->
+          
+         {% for i in url_list%}
+          <div class="image-box"></div>
+         {% endfor %}
       </div>
 
       <!-- Hidden area for photo details -->
