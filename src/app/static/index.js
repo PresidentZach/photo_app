@@ -3,17 +3,18 @@
 function displayPhotos() {
 
     // Somehow, we get the url_list array from views.py...
+    var photourls = {{ url_list_json }};
    const imagegrid = document.getElementById("grid");
-   //var photourls = ??
+   
    
 
 // Loop through the photourls array, for each one create an image-box div 
-// For now, it's just creating 5 divs
-   for (let p = 0; p < 5; p++ ) {
+
+   for (let p = 0; p < photourls.length; p++ ) {
     
     imgbox = document.createElement("div");
     imgbox.setAttribute("class", "image-box");
-    //imgbox.innerHTML = '<img src= "'+ photourls.[i]+'"></img>';
+    //imgbox.innerHTML = "<p>"+ photourls +"</p>";
     imagegrid.appendChild(imgbox);
    }
 

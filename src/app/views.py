@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
 from app.classes.user import User
-
+import json
 
 from app.globals import * # global constant variables
 
@@ -112,7 +112,9 @@ def index(request):
         for photo in photo_list:
             url_list.append(Photo.get_url)
 
-            
+        context = {
+        'urls_list_json': json.dumps(url_list)
+        }
 
     return render(request, "app/index.html", context=context)
 
