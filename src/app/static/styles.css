@@ -169,3 +169,9 @@ nav li:hover {
 .hidden {
   display: none;
 }
+
+.upload-area.dragging {
+    background-color: #b2ebf2;
+    border-color: #00796b;
+    color: #004d40;
+}
