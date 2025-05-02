@@ -15,7 +15,7 @@
   <header>
     <div class="logo">PhotoSynthesis</div>
     <div class="account">
-      <a href="#">Logout</a> <!-- Only logout is shown now -->
+      <a href="{% url 'logout' %}">Logout</a> <!-- Only logout is shown now -->
     </div>
   </header>
 
@@ -75,7 +75,14 @@
 
       <!-- Flexbox Image Grid -->
       <div id = "grid" class="image-grid">
-         <!-- displayPhotos() fn populates this grid -->
+        <div class="image-box">test box</div>
+         <!-- populates this grid w/ urls from url_list-->
+          
+         {% for i in url_list%}
+          <div class="image-box">
+            <p>{{ i }}</p>
+          </div>
+         {% endfor %}
       </div>
 
       <!-- Hidden area for photo details -->
@@ -86,9 +93,19 @@
         <div class="description">
           Description: A person with a dog in a forest setting, standing under trees.
         </div>
-      </div>
     </div>
-  </div>
+    <script>
+        // When the sidebar "Upload" is clicked, trigger the hidden file input
+        document.getElementById('sidebar-upload').addEventListener('click', function () {
+            document.getElementById('hidden-upload').click();
+        });
+
+        // Optional: When a file is selected, auto-submit the form or display file name
+        document.getElementById('hidden-upload').addEventListener('change', function (event) {
+            alert(`You selected ${event.target.files.length} file(s).`);
+            // Optionally: trigger form submit here
+        });
+    </script>
 
 </body>
 </html>
