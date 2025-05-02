@@ -93,9 +93,19 @@
         <div class="description">
           Description: A person with a dog in a forest setting, standing under trees.
         </div>
-      </div>
     </div>
-  </div>
+    <script>
+        // When the sidebar "Upload" is clicked, trigger the hidden file input
+        document.getElementById('sidebar-upload').addEventListener('click', function () {
+            document.getElementById('hidden-upload').click();
+        });
+
+        // Optional: When a file is selected, auto-submit the form or display file name
+        document.getElementById('hidden-upload').addEventListener('change', function (event) {
+            alert(`You selected ${event.target.files.length} file(s).`);
+            // Optionally: trigger form submit here
+        });
+    </script>
 
 </body>
 </html>
