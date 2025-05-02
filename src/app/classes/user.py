@@ -42,9 +42,9 @@ class User:
             { "email": email, "password": password, }
         )
         if response: 
-            self.fetch_photos() # updates the global list of photos
-            return True
-        return False
+            self.fetch_photos(response.session.access_token) # updates the global list of photos
+            return response.session.access_token
+        return None
 
     def signout(self):
         response = supabase.auth.sign_out()
@@ -66,7 +66,10 @@ class User:
         return None
 
     # returns list of photo objects that belong to the user
-    def fetch_photos(self):
+    def fetch_photos(self, token):
+        if token:
+            supabase.auth.set_session(token, token)
+
         user_id = self.get_id()
         if not user_id:
             print("No authenticated user found.")
