@@ -14,14 +14,11 @@
         imagegrid.appendChild(imagegrid);
     }
 
-}
-
 // test function (remove later)
 function testFn() {
     document.getElementById("test").innerHTML = "test worked!";
 }
 
-<script>
   // Sidebar click triggers hidden file input
     document.getElementById('sidebar-upload').addEventListener('click', function () {
         document.getElementById('hidden-upload').click();
@@ -51,4 +48,3 @@ function testFn() {
     fileInput.files = e.dataTransfer.files;
     document.getElementById("upload-form").submit();
   });
-</script>
