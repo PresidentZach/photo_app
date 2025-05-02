@@ -1,5 +1,6 @@
 import sys
 import os
+import pytest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 from app.classes.photo import Photo
@@ -74,14 +75,20 @@ def test_calculate_date(photo_instance):
 
 def test_insert_into_database(monkeypatch, photo_instance):
     """Test inserting a photo into the database."""
-    def mock_insert(data):
+    def mock_insert(self):
+        data = {
+            "url": self.url,
+            "creator": self.creator,
+            "tags": self.tags,
+            "is_favorited": self.is_favorited,
+        }
         assert data["url"] == "http://example.com/photo.jpg"
         assert data["creator"] == "test_creator"
         assert data["tags"] == [1, 2, 3]
         assert data["is_favorited"] is False
         return {"id": 123}
 
-    monkeypatch.setattr(photo_instance, "insert_into_database", mock_insert)
+    monkeypatch.setattr(Photo, "insert_into_database", mock_insert)
     result = photo_instance.insert_into_database()
     assert result["id"] == 123
 
