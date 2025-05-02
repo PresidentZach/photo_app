@@ -1,12 +1,13 @@
 /* Reset & base style */
 body {
-  margin: 0;
-  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: #f0f9ff;
-  color: #333;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', 'Poppins', sans-serif;
+    height: 100vh;
+    background: linear-gradient(135deg, #dfffdc, #b8f0ff);
+    color: #333;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header bar */
@@ -176,17 +177,6 @@ nav li:hover {
     color: #004d40;
 }
 
-/* General page styling */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #dfffdc, #b8f0ff);
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 /* Container for the login form */
 .login-page {
