@@ -1,6 +1,3 @@
-// Function to display urls fetched by url_list in views.py, and create a image_box element for each one
-
-function displayPhoto() {
 
     var photourls = "{{url_list}}";
     var imagegrid = document.getElementByClassName("image-grid");

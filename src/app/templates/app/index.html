@@ -7,89 +7,91 @@
   {% load static %}
  <link rel="stylesheet" href="{% static 'styles.css' %}">
  <script src="{% static 'index.js' %}"></script>
+ <body onload="displayPhotos()">
 </head>
 <body>
 
-    <!-- Top bar with logo and logout -->
-    <header>
-        <div class="logo">PhotoSynthesis</div>
-        <div class="account">
-            <a href="#">Logout</a> <!-- Only logout is shown now -->
-        </div>
-    </header>
+  <!-- Top bar with logo and logout -->
+  <header>
+    <div class="logo">PhotoSynthesis</div>
+    <div class="account">
+      <a href="{% url 'logout' %}">Logout</a> <!-- Only logout is shown now -->
+    </div>
+  </header>
 
-    <div class="main">
-        <nav>
-            <!-- Sidebar with search and links -->
-            <div class="search-bar">
-                <input type="text" placeholder="Search...">
-            </div>
-            <ul>
-                <li>* Favorites</li>
-                <li> Tags</li>
-                <li id="sidebar-upload">📁 Upload</li>
-                <input type="file" id="hidden-upload" style="display:none;" multiple>
-            </ul>
+  <div class="main">
+    <nav>
+      <!-- Sidebar with search and links -->
+      <div class="search-bar">
+        <input type="text" placeholder="Search...">
+      </div>
+      <ul>
+        <li>* Favorites</li>
+        <li> Tags</li>
+        <li> Upload</li> <!-- Only keeping needed links -->
+      </ul>
 
-            <!-- Upload area -->
-            <div id="drop-area" class="upload-area">
-                <form id="upload-form" method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
-                    {% csrf_token %}
-                    <label for="photoUpload">Upload Photos:</label><br>
-                    <input type="file" id="photoUpload" name="image" accept="image/png, image/jpeg, image/jpg" multiple required>
-                    <br>
-                    <button type="submit">Upload</button>
-                </form>
+      <!-- Upload area -->
+      <div class="upload-area">
+	  
+         <!--Creating a form. When upload button is pressed, upload_image(request) in views.py is ran-->
+		<form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
+			{% csrf_token %}
+				<label for="photoUpload">Upload Photos:</label>
+					<br></br>
+				<input type="file" name="image" accept="image/png, image/jpeg, image/jpg" multiple required>
+					<br></br>
+				<button type="submit">Upload</button>
+		</form>
+		{% if image_data %}
+		    <h2>Upload Status</h2>
+        <h2>Tags:</h2>
+    {% endif %}
 
-                {% if image_data %}
-                <h2>Upload Status</h2>
-                <h2>Tags:</h2>
-                {% endif %}
+			{% if error %}
+				<p style="color: red;">{{ error }}</p>
+			{% else %}
+				
+				<ul>
+					{% for image_data in images_data %}
+						<li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
+						<ul>
+							{% for tag, score in image_data.tags_and_scores %}
+								<li>{{ tag }} - Score: {{ score }}</li>
+							{% endfor %}
+						</ul>
+					{% endfor %}
+				</ul>
+			{% endif %}
+      </div>
+	  
+	  
+	  
+    </nav>
 
-                {% if error %}
-                <p style="color: red;">{{ error }}</p>
-                {% else %}
-                <ul>
-                    {% for image_data in images_data %}
-                    <li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
-                    <ul>
-                        {% for tag, score in image_data.tags_and_scores %}
-                        <li>{{ tag }} - Score: {{ score }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            </div>
+    <div class="content">
+      <h2>Photo Gallery</h2>
 
 
+      <!-- Flexbox Image Grid -->
+      <div id = "grid" class="image-grid">
+        <div class="image-box">test box</div>
+         <!-- populates this grid w/ urls from url_list-->
+          
+         {% for i in url_list%}
+          <div class="image-box">
+            <p>{{ i }}</p>
+          </div>
+         {% endfor %}
+      </div>
 
-
-        </nav>
-
-        <div class="content">
-            <h2>Photo Gallery</h2>
-
-            <!--temporary testing spot-->
-
-            <p id="test"></p>
-
-            <!-- Flexbox Image Grid -->
-            <div class="image-grid">
-
-                <div class="image-box">Image 1</div>
-
-            </div>
-
-            <!-- Hidden area for photo details -->
-            <div class="image-detail hidden" id="image-detail">
-                <h3>Image Details</h3>
-                <div class="img-box">[Image]</div>
-                <div class="tags">Tags: person, dog, landscape</div>
-                <div class="description">
-                    Description: A person with a dog in a forest setting, standing under trees.
-                </div>
-            </div>
+      <!-- Hidden area for photo details -->
+      <div class="image-detail hidden" id="image-detail">
+        <h3>Image Details</h3>
+        <div class="img-box">[Image]</div>
+        <div class="tags">Tags: person, dog, landscape</div>
+        <div class="description">
+          Description: A person with a dog in a forest setting, standing under trees.
         </div>
     </div>
     <script>
