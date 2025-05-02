@@ -79,7 +79,9 @@
          <!-- populates this grid w/ urls from url_list-->
           
          {% for i in url_list%}
-          <div class="image-box"></div>
+          <div class="image-box">
+            <p>{{ i }}</p>
+          </div>
          {% endfor %}
       </div>
 
