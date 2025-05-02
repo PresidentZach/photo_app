@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
 from app.classes.user import User
+from django.urls import reverse
+
 
 from app.globals import * # global constant variables
 
@@ -89,35 +91,57 @@ def index(request):
 
                 # TODO: Return error here
 
-                # creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
+                creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
 
             # Inserting tags into the database
             i = Photo(url=image_url, creator=creator, tags=tag_ids)
             i.insert_into_database()
+
+    token = request.session.get("supabase_token")
+    if token:
+
         
-    # If no errors, render upload_image.html
-
-    return render(request, "app/index.html", context=context)
-
-def display(request):
-        # Take the current user class object (not available yet)
-
-        # Run fetch_photos(), which will return a list of photo objects
-        # (When we have the user class object, we'll filter the list of photos by the user/creator id.)
-
-        context = {
-            "urls_list": []
-        }
+        # If no errors, render upload_image.html
         photo_object = User()
+            
         
-        photo_list = photo_object.fetch_photos()
-        url_list = []
+
+        photo_list = photo_object.fetch_photos(token=token)
+
+        context["url_list"] = []
         # Loop through this list, for each item, return the url
         for photo in photo_list:
-            context["url_list"].append(Photo.get_url)
+            context["url_list"].append(photo.get_url())
 
-        return render(request, "app/index.html", context)
+        return render(request, "app/index.html", context=context)
+
+    return render(request, "app/index.html")
 
 
 def login(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = User()
+		
+        token = user.login(email=email, password=password)
+        if token:
+			# Store token in Django session
+            request.session["supabase_token"] = token
+            return redirect("index")
+        else:
+            return render(request, "app/login.html", {"error": "Invalid login."})
+        
     return render(request, "app/login.html")
+
+def logout(request):
+    user = User()
+
+    # Signs out of supabase
+    user.signout()
+
+    # Clears the Django session
+    request.session.flush()
+
+    # Redirect to login
+    return redirect("login")
