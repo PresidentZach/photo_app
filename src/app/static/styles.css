@@ -139,24 +139,49 @@ nav li:hover {
   box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Thumbnail image inside image-box*/
+.thumb {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+}
+
 /* Hidden details initially */
 .image-detail {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
   margin-top: 30px;
-  border-top: 2px dashed #aacfd0;
+  border: 2px solid #aacfd0;
   padding-top: 20px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.05);
   padding: 20px;
 }
 
-/* Placeholder image inside details */
-.thumb {
-  width: 220px;
-  height: 160px;
-  margin-bottom: 15px;
-  border-radius: 12px;
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+/* Close button */ 
+.close {
+  width: 5%;
+  height: 5%;
+  transition: transform 0.2s, drop-shadow 0.2s;
+}
+
+/* Close button hover effect */
+.close:hover {
+  transform: scale(1.03);
+  filter: drop-shadow(5px 5px 5px #0000000d);
+}
+
+/* Full img inside image-detail */
+.full-img {
+  max-width: 100%;
+  height: 100%;
+  border-radius: 5px;
 }
 
 /* Tags and description */
