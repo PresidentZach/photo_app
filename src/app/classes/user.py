@@ -67,8 +67,12 @@ class User:
 
     # returns list of photo objects that belong to the user
     def fetch_photos(self, token):
-        if token:
+        if not token:
+            return []
+        try:
             supabase.auth.set_session(token, token)
+        except Exception as e:
+            print(f"Authentication error: {e}")
 
         user_id = self.get_id()
         if not user_id:
