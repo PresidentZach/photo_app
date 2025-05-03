@@ -97,15 +97,18 @@ def index(request):
             i = Photo(url=image_url, creator=creator, tags=tag_ids)
             i.insert_into_database()
 
+    # Getting the token of the user logged in
     token = request.session.get("supabase_token")
+
+    # Creating a key in context for if a user is logged in
+    context["logged_in"] = []
+    # If they're logged in
     if token:
+        # Filling in logged in key of context
+        context["logged_in"].append("Logged in :)")
 
-        
-        # If no errors, render upload_image.html
+        # Fetch all photos of that user
         photo_object = User()
-            
-        
-
         photo_list = photo_object.fetch_photos(token=token)
 
         context["url_list"] = []
