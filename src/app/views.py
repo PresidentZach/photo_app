@@ -149,11 +149,15 @@ def signup(request):
         signup_status = user.signup(email=email, password=password)
 
         if signup_status == "Already Exists":
-            return render(request, "app/login.html", {"message": "You already have an account. "
-            "Please log in."})
+            return render(request, "app/login.html", {
+                "message": f"You already have an account under {email}. Please log in."
+            })
         elif signup_status == "Needs Email":
-            return render(request, "app/login.html", {"message": "You have been sent a "
-            "confirmation email. Please check your inbox."})
+            return render(request, "app/login.html", {
+                "message": f"You have been sent a confirmation email to {email}. "
+                           "Please check your inbox. If you are struggling to find the email, "
+                           "check your Spam / Junk folder."
+            })
         else:
             # Catch other errors and show a generic error message
             return render(request, "app/login.html", {"error": f"Error: {signup_status}"})
