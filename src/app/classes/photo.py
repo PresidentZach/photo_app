@@ -8,7 +8,6 @@ import json
 import os
 
 from app.globals import * # global constant variables
-from app.classes.user import * # user class
 
 class Photo:
     def __init__(self, url="no_url", creator="no_creator", tags=None):
