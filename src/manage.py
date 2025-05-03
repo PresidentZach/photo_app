@@ -22,18 +22,12 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    
-    # user_login("zachstofko@proton.me", "Legorock12@")
-    # print(get_current_user_id())
-    # print(get_current_user_email())
 
     '''
     For some reason, the first time the AI model's API is requested, it fails.
     In order to fix this, we call the API with a sample image whenever the server starts.
     '''
 
-    # For now I will comment this out in order to not use up credits.
-    # We will uncomment this when the project is finished.
     '''
     candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
 
@@ -65,11 +59,13 @@ def main():
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
+    print("Sent image to hugging face")
+    print("Response; ", response.text)
     '''
-
     execute_from_command_line(sys.argv)
+
+    
 
 
 if __name__ == '__main__':
     main()
-    # create_new_user("zachstofko@proton.me", "Legorock12@")

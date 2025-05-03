@@ -30,21 +30,49 @@ class User:
         self.photo_list = []
 
     def signup(self, email="", password=""):
-        response = supabase.auth.sign_up(
-            { "email": email, "password": password, }
-        )
-        if response: 
-            return True
-        return False
+        # Try to log in first
+        login_response = self.login(email=email, password=password)
+
+        # If login is successful, the user already exists
+        if login_response:  
+            return "Already Exists"
+        try:
+            response = supabase.auth.sign_up(
+                { "email": email, "password": password, }
+            )
+            
+            user = response.user
+
+            if user:
+                # Check if email is confirmed or not
+                if user.email_confirmed_at is None:
+                    return "Needs Email"
+            
+            # If no user is returned, something went wrong
+            return "Error: No user created. Please try again."
+                    
+        except KeyError as e:
+            return f"KeyError: Missing expected key in response - {e}"
+        except ConnectionError:
+            return "Error: Unable to connect to the authentication server. Please check your network connection."
+        except Exception as e:
+            return f"Unexpected error: {str(e)}"
 
     def login(self, email="", password=""):
-        response = supabase.auth.sign_in_with_password(
-            { "email": email, "password": password, }
-        )
-        if response: 
-            self.fetch_photos() # updates the global list of photos
-            return True
-        return False
+        try:
+            response = supabase.auth.sign_in_with_password(
+                {"email": email, "password": password}
+            )
+            if response and response.user:
+                self.fetch_photos(response.session.access_token)  # Fetch photos or other data after login
+                return response.session.access_token  # Return the access token if login is successful
+            return None
+        except KeyError as e:
+            return f"KeyError: Missing expected key in response - {e}"
+        except ConnectionError:
+            return "Error: Unable to connect to the authentication server. Please check your network connection."
+        except Exception as e:
+            return f"Unexpected error: {str(e)}"
 
     def signout(self):
         response = supabase.auth.sign_out()
@@ -66,7 +94,14 @@ class User:
         return None
 
     # returns list of photo objects that belong to the user
-    def fetch_photos(self):
+    def fetch_photos(self, token):
+        if not token:
+            return []
+        try:
+            supabase.auth.set_session(token, token)
+        except Exception as e:
+            print(f"Authentication error: {e}")
+
         user_id = self.get_id()
         if not user_id:
             print("No authenticated user found.")

@@ -6,6 +6,8 @@
   <title>PhotoSynthesis</title>
   {% load static %}
  <link rel="stylesheet" href="{% static 'styles.css' %}">
+ <script src="{% static 'index.js' %}"></script>
+ <body onload="displayPhotos()">
 </head>
 <body>
 
@@ -13,7 +15,13 @@
   <header>
     <div class="logo">PhotoSynthesis</div>
     <div class="account">
-      <a href="#">Logout</a> <!-- Only logout is shown now -->
+      <!-- If the user is logged in display logout -->
+      {% if logged_in %}
+        <a href="{% url 'logout' %}">Logout</a> 
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+
     </div>
   </header>
 
@@ -63,33 +71,66 @@
 			{% endif %}
       </div>
 	  
-	  
-	  
     </nav>
-
     <div class="content">
       <h2>Photo Gallery</h2>
+
       <!-- Flexbox Image Grid -->
-      <div class="image-grid">
-        <div class="image-box">Image 1</div>
-        <div class="image-box">Image 2</div>
-        <div class="image-box">Image 3</div>
-        <div class="image-box">Image 4</div>
-        <div class="image-box">Image 5</div>
-        <div class="image-box">Image 6</div>
+      <div id = "grid" class="image-grid">
+
+        <!-- Function that opens image-detail div when the current img-box is clicked. -->
+        <script>
+        function displayInfo() {
+          var imgDetail = document.getElementById("image-detail");
+          imgDetail.style.display = "block";
+        }
+       </script>
+
+         <!-- For each url in url_list, make an image-box div. -->
+          
+         {% for i in url_list%}
+          <div class="image-box"onclick= "displayInfo()">
+            <img class= "thumb" src={{ i }}>
+          </div>
+         {% endfor %}
       </div>
 
+
+
+
+      <!-- Test image box.-->
+      
+     <!-- <div class="image-box" onclick= "displayInfo()"><img class="thumb"  src={% static 'ep233.png' %}></div> -->
+
+
       <!-- Hidden area for photo details -->
+
+      <!-- Script for close button, that closes image-detail div -->
+       <script>
+        function closeInfo() {
+          var imgDetail = document.getElementById("image-detail");
+          imgDetail.style.display = "none";
+        }
+       </script>
+
+       <!-- Image-detail div with photo and tags-->
       <div class="image-detail hidden" id="image-detail">
-        <h3>Image Details</h3>
-        <div class="img-box">[Image]</div>
-        <div class="tags">Tags: person, dog, landscape</div>
-        <div class="description">
-          Description: A person with a dog in a forest setting, standing under trees.
-        </div>
-      </div>
+        <img class="close" onclick = "closeInfo()" src= {% static 'close.png' %}><br>
+        <img class="full-img"  src={% static 'ep233.png' %}>
+        <div class="tags">Tags: [Tags]</div>
     </div>
-  </div>
+    <script>
+        // When the sidebar "Upload" is clicked, trigger the hidden file input
+        document.getElementById('sidebar-upload').addEventListener('click', function () {
+            document.getElementById('hidden-upload').click();
+        });
+
+        // Optional: When a file is selected, auto-submit the form or display file name
+        document.getElementById('hidden-upload').addEventListener('change', function (event) {
+            alert(`You selected ${event.target.files.length} file(s).`);
+            // Optionally: trigger form submit here
+        });
+    </script>
 
 </body>
 </html>
