@@ -84,22 +84,14 @@
         }
        </script>
 
-         <!-- For each url in url_list, make an image-box div. -->
+         <!-- For each photo in the photo_list, make an image-box div. -->
           
-         {% for i in url_list%}
+         {% for photo in photo_list %}
           <div class="image-box"onclick= "displayInfo()">
-            <img class= "thumb" src={{ i }}>
+            <img class= "thumb" src={{ photo.url }}>
           </div>
          {% endfor %}
       </div>
-
-
-
-
-      <!-- Test image box.-->
-      
-     <!-- <div class="image-box" onclick= "displayInfo()"><img class="thumb"  src={% static 'ep233.png' %}></div> -->
-
 
       <!-- Hidden area for photo details -->
 

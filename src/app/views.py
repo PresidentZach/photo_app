@@ -104,16 +104,17 @@ def index(request):
         # If no errors, render upload_image.html
         photo_object = User()
             
-        
 
         photo_list = photo_object.fetch_photos(token=token)
 
-        context["url_list"] = []
-        # Loop through this list, for each item, return the url
-        for photo in photo_list:
-            context["url_list"].append(photo.get_url())
+        context = { 'photo_list' : photo_list,
+                   }
+        
+        
 
         return render(request, "app/index.html", context=context)
+    
+    
 
     return render(request, "app/index.html")
 
