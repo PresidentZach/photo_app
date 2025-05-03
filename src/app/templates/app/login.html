@@ -6,7 +6,6 @@
     <title>Login - PhotoSynthesis</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
-
 </head>
 <body>
 
@@ -22,5 +21,25 @@
     <!-- TODO: Add styling -->
     <a href="{% url 'index' %}">Return to Home</a>
   </div>
+
+  <br></br>
+
+  <!-- Simple sign up form-->
+  <div class="login-page">
+    <h1>Sign Up 🌿</h1>
+    <form class="login-form" method="POST" action="{% url 'signup' %}">
+      {% csrf_token %}
+      <input type="email" name="email" id="email" placeholder="Email" required />
+      <input type="password" name="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign Up!</button>
+    </form>
+  </div>
+
+  <!-- Message for sign up -->
+  {% if error %}
+    <p>{{ error }}</p>
+  {% else %}
+    <p>{{ message }}</p>
+  {% endif %}
 </body>
 </html>

@@ -3,8 +3,7 @@ from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
 from app.classes.user import User
-from django.urls import reverse
-
+from django.conf import settings
 
 from app.globals import * # global constant variables
 
@@ -127,7 +126,11 @@ def login(request):
         password = request.POST.get("password")
         user = User()
 		
-        token = user.login(email=email, password=password)
+        try:
+            token = user.login(email=email, password=password)
+        except Exception as e:
+            return render(request, "app/login.html", {"error": f"Error: {e}"})
+        
         if token:
 			# Store token in Django session
             request.session["supabase_token"] = token
@@ -135,6 +138,26 @@ def login(request):
         else:
             return render(request, "app/login.html", {"error": "Invalid login."})
         
+    return render(request, "app/login.html")
+
+def signup(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = User()
+
+        signup_status = user.signup(email=email, password=password)
+
+        if signup_status == "Already Exists":
+            return render(request, "app/login.html", {"message": "You already have an account. "
+            "Please log in."})
+        elif signup_status == "Needs Email":
+            return render(request, "app/login.html", {"message": "You have been sent a "
+            "confirmation email. Please check your inbox."})
+        else:
+            # Catch other errors and show a generic error message
+            return render(request, "app/login.html", {"error": f"Error: {signup_status}"})
+    
     return render(request, "app/login.html")
 
 def logout(request):
@@ -148,3 +171,9 @@ def logout(request):
 
     # Redirect to login
     return redirect("login")
+
+def confirm_email(request):
+    return render(request, "app/confirm.html", {
+        "SUPABASE_URL": settings.SUPABASE_URL,
+        "SUPABASE_ANON_KEY": settings.SUPABASE_ANON_KEY,
+    })

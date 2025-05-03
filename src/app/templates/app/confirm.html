@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Confirmation</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+</head>
+<body>
+  <h2 id="message">Confirming your email...</h2>
+
+  <script>
+    // Getting the supabase keys
+    const SUPABASE_URL = "{{ SUPABASE_URL }}";
+    const SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
+
+    // Getting the access token from the url
+    const accessToken = new URLSearchParams(window.location.hash.substring(1)).get("access_token");
+  
+    // Function to handle confirmation
+    async function handleConfirmation() {
+      const messageEl = document.getElementById("message");
+    
+      // If someone happens to get to the confirm page by accident
+      if (!accessToken) {
+        messageEl.innerText = "Missing or invalid confirmation token.";
+        return;
+      }
+      
+      // API call to supabase to get information about the user who is signing up
+      try {
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+            "apikey": SUPABASE_ANON_KEY
+          },
+        });
+  
+        // Getting the data in json form
+        const data = await res.json();
+  
+        // If there is an error
+        if (!res.ok) {
+          messageEl.innerText = `Error: ${data.message || "Failed to confirm email."}`;
+        } else { // Otherwise email has been confirmed
+          messageEl.innerText = "✅ Your email has been confirmed successfully!";
+        }
+      } catch (err) {
+        messageEl.innerText = "Network error during email confirmation.";
+      }
+    }
+    
+    // Call the confirmation function
+    handleConfirmation();
+  </script>
+
+<a href="{% url 'index' %}">Return to Home</a>
+</body>
+</html>
