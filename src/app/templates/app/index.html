@@ -76,27 +76,29 @@
       <!-- Flexbox Image Grid -->
       <div id = "grid" class="image-grid">
 
-         <!-- For each url in url_list, make an image-box div. -->
-          
-         {% for i in url_list%}
-          <div class="image-box">
-            <p>{{ i }}</p>
-          </div>
-         {% endfor %}
-      </div>
-
-      <!-- Function that opens image-detail div when the current img-box is clicked. -->
-      <script>
+              <!-- Function that opens image-detail div when the current img-box is clicked. -->
+        <script>
         function displayInfo() {
           var imgDetail = document.getElementById("image-detail");
           imgDetail.style.display = "block";
         }
        </script>
 
+         <!-- For each url in url_list, make an image-box div. -->
+          
+         {% for i in url_list%}
+          <div class="image-box"onclick= "displayInfo()">
+            <img class= "thumb" src={{ i }}>
+          </div>
+         {% endfor %}
+      </div>
+
+
+
 
       <!-- Test image box.-->
       
-      <div class="image-box" onclick= "displayInfo()"><img class="thumb"  src={% static 'ep233.png' %}></div>
+     <!-- <div class="image-box" onclick= "displayInfo()"><img class="thumb"  src={% static 'ep233.png' %}></div> -->
 
 
       <!-- Hidden area for photo details -->
