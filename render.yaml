@@ -3,7 +3,7 @@ services:
     name: my-django-app
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn project"
+    startCommand: "gunicorn project.wsgi:application"
     envVars:
       - key: DATABASE_URL
         value: postgresql://postgres:[YOUR-PASSWORD]@db.dwesnrinrszmstvduvue.supabase.co:5432/postgres
