@@ -6,7 +6,7 @@
     <title>Email Confirmation</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
 </head>
 <body>
   <h2 id="message">Confirming your email...</h2>
@@ -58,6 +58,7 @@
     handleConfirmation();
   </script>
 
-<a href="{% url 'index' %}">Return to Home</a>
+<a href="{% url 'login' %}">log in</a>
+
 </body>
 </html>

@@ -83,14 +83,10 @@ def index(request):
             c = User()
             creator = c.get_id()
             
-            # TODO: Make sure we actually get the creator ID
             # Return error if we don't
             if creator is None:
-                print("Creator not found, ")
+                return render(request, "app/index.html", {"error": "CreatorID not found. Please log in."})
 
-                # TODO: Return error here
-
-                creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
 
             # Inserting tags into the database
             i = Photo(url=image_url, creator=creator, tags=tag_ids)
@@ -149,15 +145,11 @@ def signup(request):
         signup_status = user.signup(email=email, password=password)
 
         if signup_status == "Already Exists":
-            return render(request, "app/login.html", {
-                "message": f"You already have an account under {email}. Please log in."
-            })
+            return render(request, "app/login.html", {"message": "You already have an account. "
+            "Please log in."})
         elif signup_status == "Needs Email":
-            return render(request, "app/login.html", {
-                "message": f"You have been sent a confirmation email to {email}. "
-                           "Please check your inbox. If you are struggling to find the email, "
-                           "check your Spam / Junk folder."
-            })
+            return render(request, "app/login.html", {"message": "You have been sent a "
+            "confirmation email. Please check your inbox."})
         else:
             # Catch other errors and show a generic error message
             return render(request, "app/login.html", {"error": f"Error: {signup_status}"})

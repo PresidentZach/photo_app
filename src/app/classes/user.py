@@ -51,12 +51,8 @@ class User:
             # If no user is returned, something went wrong
             return "Error: No user created. Please try again."
                     
-        except KeyError as e:
-            return f"KeyError: Missing expected key in response - {e}"
-        except ConnectionError:
-            return "Error: Unable to connect to the authentication server. Please check your network connection."
         except Exception as e:
-            return f"Unexpected error: {str(e)}"
+            return str(e)
 
     def login(self, email="", password=""):
         try:
@@ -67,12 +63,8 @@ class User:
                 self.fetch_photos(response.session.access_token)  # Fetch photos or other data after login
                 return response.session.access_token  # Return the access token if login is successful
             return None
-        except KeyError as e:
-            return f"KeyError: Missing expected key in response - {e}"
-        except ConnectionError:
-            return "Error: Unable to connect to the authentication server. Please check your network connection."
         except Exception as e:
-            return f"Unexpected error: {str(e)}"
+            return None
 
     def signout(self):
         response = supabase.auth.sign_out()
