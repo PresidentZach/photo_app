@@ -2,12 +2,12 @@ services:
   - type: web
     name: my-django-app
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn project.wsgi:application"
+    buildCommand: "cd src && pip install -r requirements.txt"
+    startCommand: "cd src && gunicorn project.wsgi:application"
     envVars:
       - key: DATABASE_URL
-        value: postgresql://postgres:[YOUR-PASSWORD]@db.dwesnrinrszmstvduvue.supabase.co:5432/postgres
+        value: postgresql://postgres:H6sEXwhEgWA6KWFi@db.dwesnrinrszmstvduvue.supabase.co:5432/postgres
       - key: DJANGO_SECRET_KEY
-        value: 2ob8i(got$6$j27mq*zy0&+ki-q3qj1mrh=8onnw1^_p)ch3mg
+        value: ^2_v=cohj4z*1ef^&#ff^$5y!f)8=kvyvy6#t8@yhpmh-hw_)%
       - key: DEBUG
         value: False
