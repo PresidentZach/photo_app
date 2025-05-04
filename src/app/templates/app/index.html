@@ -82,7 +82,12 @@
           var name = photoID.id;
           var imgDetail = document.getElementById("image-detail");
           imgDetail.style.display = "block";
-          document.getElementById("tags").innerHTML = name;
+          var imgInfo  = document.getElementById("" + name + "_info").innerHTML; 
+
+          const infoArray = imgInfo.split(";");
+         document.getElementById("full").innerHTML="<img class= "full-img" src = "infoArray[1]">";
+          document.getElementById("tags").innerHTML = infoArray[2];
+
         }
        </script>
 
@@ -92,6 +97,7 @@
           <div class="image-box" id= "{{photo.id}}" onclick= "displayInfo(this)">
             <img class= "thumb" src={{ photo.url }}>
           </div>
+          <div class="info" id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}}</div>
          {% endfor %}
       </div>
 
@@ -108,8 +114,8 @@
        <!-- Image-detail div with photo and tags-->
       <div class="image-detail hidden" id="image-detail">
         <img class="close" onclick = "closeInfo()" src= {% static 'close.png' %}><br>
-        <img class="full-img"  src={% static 'ep233.png' %}>
-        <div id="tags" class="tags">Tags: [Tags]</div>
+        <div id="full"></div>
+        <div id="tags" class="tags"></div>
     </div>
     <script>
         // When the sidebar "Upload" is clicked, trigger the hidden file input
