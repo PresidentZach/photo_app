@@ -103,18 +103,12 @@ def index(request):
         
         # If no errors, render upload_image.html
         photo_object = User()
-            
 
         photo_list = photo_object.fetch_photos(token=token)
 
-        context = { 'photo_list' : photo_list,
-                   }
+        context = { 'photo_list' : photo_list,}
         
-        
-
         return render(request, "app/index.html", context=context)
-    
-    
 
     return render(request, "app/index.html")
 
