@@ -39,3 +39,5 @@ websockets==14.2
 yarl==1.18.3
 pytest
 pytest-django
+gunicorn
+dj-database-url
