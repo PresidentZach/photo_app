@@ -113,7 +113,10 @@
 
        <!-- Image-detail div with photo and tags-->
       <div class="image-detail hidden" id="image-detail">
-        <img class="close" onclick = "closeInfo()" src= {% static 'close.png' %}><br>
+        <img class="detailbutton" onclick = "closeInfo()" src= {% static 'close.png' %}>
+        <img class="detailbutton" onclick = "toggleFav()" src= {% static 'unfav.png' %}>
+        <img class="detailbutton" onclick = "deleteImage()" src = {% static 'remove.png' %}>
+        <img class="detailbutton" onclick = "addTag()" src = {% static 'add.png' %}><br>
         <div id="full"></div>
         <div id="tags" class="tags"></div>
     </div>
