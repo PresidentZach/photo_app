@@ -85,7 +85,7 @@
           var imgInfo  = document.getElementById("" + name + "_info").innerHTML; 
 
           const infoArray = imgInfo.split(";");
-         document.getElementById("full").innerHTML="<img class= "full-img" src = "infoArray[1]">";
+         document.getElementById("full").innerHTML='<img class = "full-img" src = "' + infoArray[1] + '" >';
           document.getElementById("tags").innerHTML = infoArray[2];
 
         }
@@ -97,7 +97,7 @@
           <div class="image-box" id= "{{photo.id}}" onclick= "displayInfo(this)">
             <img class= "thumb" src={{ photo.url }}>
           </div>
-          <div class="info" id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}}</div>
+          <div class="info hidden" id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}}</div>
          {% endfor %}
       </div>
 
