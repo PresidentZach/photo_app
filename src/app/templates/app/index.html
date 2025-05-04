@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PhotoSynthesis</title>
   {% load static %}
- <link rel="stylesheet" href="{% static 'styles.css' %}">
- <link rel="icon" href="{% static 'fav.png' %}">
+ <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+ <link rel="icon" href="{% static 'img/fav.png' %}">
  <body onload="displayPhotos()">
 </head>
 <body>
@@ -115,8 +115,8 @@
 
        <!-- Image-detail div with photo and tags-->
       <div class="image-detail hidden" id="image-detail">
-        <img class="close" onclick = "closeInfo()" src= {% static 'close.png' %}><br>
-        <img class="full-img"  src={% static 'ep233.png' %}>
+        <img class="close" onclick = "closeInfo()" src= {% static 'img/close.png' %}><br>
+        <img class="full-img"  src={% static 'img/ep233.png' %}>
         <div class="tags">Tags: [Tags]</div>
     </div>
     <script>
@@ -131,7 +131,7 @@
             // Optionally: trigger form submit here
         });
     </script>
-    <script src="{% static 'index.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
 
 </body>
 </html>
