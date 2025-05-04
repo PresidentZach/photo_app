@@ -83,7 +83,12 @@ DATABASES = {
     'default': dj_database_url.config(default=os.environ.get("DATABASE_URL"))
 }
 
-ALLOWED_HOSTS = ['photo-app.onrender.com', '.onrender.com']
+ALLOWED_HOSTS = [
+    'photo-app.onrender.com',  # your Render domain
+    '.onrender.com',
+    '127.0.0.1',
+    'localhost'
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
