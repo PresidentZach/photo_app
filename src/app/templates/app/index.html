@@ -6,7 +6,7 @@
   <title>PhotoSynthesis</title>
   {% load static %}
  <link rel="stylesheet" href="{% static 'styles.css' %}">
- <script src="{% static 'index.js' %}"></script>
+ <link rel="icon" href="{% static 'fav.png' %}">
  <body onload="displayPhotos()">
 </head>
 <body>
@@ -131,6 +131,7 @@
             // Optionally: trigger form submit here
         });
     </script>
+    <script src="{% static 'index.js' %}"></script>
 
 </body>
 </html>

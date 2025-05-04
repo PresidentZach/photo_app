@@ -2,7 +2,10 @@ services:
   - type: web
     name: my-django-app
     env: python
-    buildCommand: "cd src && pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    buildCommand: |
+      cd src
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
     startCommand: "cd src && gunicorn project.wsgi:application"
     envVars:
       - key: DATABASE_URL
@@ -11,3 +14,7 @@ services:
         value: ^2_v=cohj4z*1ef^&#ff^$5y!f)8=kvyvy6#t8@yhpmh-hw_)%
       - key: DEBUG
         value: False
+      - key: SUPABASE_URL
+        value: https://dwesnrinrszmstvduvue.supabase.co
+      - key: SUPABASE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3ZXNucmlucnN6bXN0dmR1dnVlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczOTk3NzM3NywiZXhwIjoyMDU1NTUzMzc3fQ.VYxIQrm9N6sQmpc2zwmGnp9QK_lcUf0AXcMUMjxmXKY
