@@ -97,7 +97,7 @@
           <div class="image-box" id= "{{photo.id}}" onclick= "displayInfo(this)">
             <img class= "thumb" src={{ photo.url }}>
           </div>
-          <div class="info hidden" id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}}</div>
+          <div class="info " id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}};{{photo.is_favorite}}</div>
          {% endfor %}
       </div>
 
@@ -114,7 +114,7 @@
         function toggleFav() {
           // Add or remove the "favorite" attribute to this image.
           // Update the image of this button accordingly.
-          
+
 
     
         }
