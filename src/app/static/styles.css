@@ -224,15 +224,55 @@ display: none;
   color: #004d40;
 }
 
+/* link colors */
+a {
+  text-decoration: none; /* Remove underline */
+  font-weight: bold; /* Make text bold */
+  color: #2f855a; /* Solid dark green */
+  transition: color 0.3s ease; /* Optional: Smooth color transition */
+}
+a:hover {
+  color: #276749; /* Slightly darker green on hover */
+}
+
+/* error message colors */
+.error-message {
+  color: #d9534f; /* Red color for error */
+  background-color: #ffe5e5; /* Light red background */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Wrapper for centering the login page */
+.center-wrapper {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Full viewport height */
+  background: linear-gradient(135deg, #dfffdc, #b8f0ff); /* Optional background */
+}
 
 /* Container for the login form */
 .login-page {
-  background: white;
+  /*background: white;
   padding: 2rem 3rem;
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   width: 320px;
+  text-align: center;*/
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 320px; /* Fixed width */
+  height: auto; /* Adjust height based on content */
   text-align: center;
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center; /* Center content vertically inside the box */
 }
 
   .login-page h1 {
@@ -243,12 +283,13 @@ display: none;
 
 /* Style for form fields */
 .login-form input {
-  width: 100%;
+  width: 100%; /* Ensure full width within the form */
   padding: 12px 15px;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
   border-radius: 12px;
   transition: border 0.3s ease;
+  box-sizing: border-box; /* Include padding and border in the width */
 }
 
   .login-form input:focus {
