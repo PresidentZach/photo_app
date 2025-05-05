@@ -108,27 +108,6 @@ def index(request):
 
     return render(request, "app/index.html", context=context)
 
-"""
-def login(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        user = User()
-		
-        try:
-            token = user.login(email=email, password=password)
-        except Exception as e:
-            return render(request, "app/login.html", {"error": f"Error: {e}"})
-        
-        if token:
-			# Store token in Django session
-            request.session["supabase_token"] = token
-            return redirect("index")
-        else:
-            return render(request, "app/login.html", {"error": "Invalid login."})
-        
-    return render(request, "app/login.html")
-"""
 def login(request):
     if request.method == "POST":
         email = request.POST.get("email")
@@ -160,11 +139,9 @@ def signup(request):
         signup_status = user.signup(email=email, password=password)
 
         if signup_status == "Already Exists":
-            return render(request, "app/signup.html", {"message": "You already have an account. "
-            "Please log in."})
+            return render(request, "app/signup.html", {"error": "An account already exists or a confirmation email has been sent."})
         elif signup_status == "Needs Email":
-            return render(request, "app/signup.html", {"message": "You have been sent a "
-            "confirmation email. Please check your inbox."})
+            return render(request, "app/signup.html", {"error": "An account already exists or a confirmation email has been sent."})
         else:
             # Catch other errors and show a generic error message
             return render(request, "app/signup.html", {"error": f"Error: {signup_status}"})
