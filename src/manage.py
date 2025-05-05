@@ -28,7 +28,7 @@ def main():
     In order to fix this, we call the API with a sample image whenever the server starts.
     '''
 
-    
+    '''
     candidate_labels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
 
     image_path = os.path.join(os.path.dirname(__file__), 'app', 'static', 'ep233.png')
@@ -61,6 +61,7 @@ def main():
     response = requests.request("POST", url, headers=headers, data=payload)
     print("Sent image to hugging face")
     print("Response: ", response)
+    '''
     
     execute_from_command_line(sys.argv)
 
