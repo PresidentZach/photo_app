@@ -28,9 +28,9 @@
   <div class="main">
     <nav>
       <!-- Sidebar with search and links -->
-      <div class="search-bar">
-        <input type="text" placeholder="Search...">
-      </div>
+        <div class="search-bar">
+            <input type="text" id="search-bar" placeholder="Search...">
+        </div>
       <ul>
           <li>* Favorites</li>
           <li> Tags</li>
@@ -80,41 +80,43 @@
     <div class="content">
       <h2>Photo Gallery</h2>
 
-      <!-- Flexbox Image Grid -->
-      <div id = "grid" class="image-grid">
+      <!--Flexbox Image Grid -->
+      <div id="grid" class="image-grid">
 
-        <!-- Function that opens image-detail div when the current img-box is clicked. -->
-        <script>
-        function displayInfo(photoID) {
-          var name = photoID.id;
-          var imgDetail = document.getElementById("image-detail");
-          imgDetail.style.display = "block";
-          var imgInfo  = document.getElementById("" + name + "_info").innerHTML; 
+          <!-- Function that opens image-detail div when the current img-box is clicked. -->
+          <script>
+              function displayInfo(photoID) {
+                  var name = photoID.id;
+                  var imgDetail = document.getElementById("image-detail");
+                  imgDetail.style.display = "block";
+                  var imgInfo = document.getElementById("" + name + "_info").innerHTML;
 
-          const infoArray = imgInfo.split(";");
-          document.getElementById("currentid").innerHTML = infoArray[0];
-          document.getElementById("full").innerHTML='<img class = "full-img" src = "' + infoArray[1] + '" >';
-          document.getElementById("tags").innerHTML = infoArray[2];
-          document.getElementById("date").innerHTML = infoArray[4];
+                  const infoArray = imgInfo.split(";");
+                  document.getElementById("currentid").innerHTML = infoArray[0];
+                  document.getElementById("full").innerHTML = '<img class = "full-img" src = "' + infoArray[1] + '" >';
+                  document.getElementById("tags").innerHTML = infoArray[2];
+                  document.getElementById("date").innerHTML = infoArray[4];
 
-          // Logic for favorited images displaying the correct icons
-          if (infoArray[3] == "True") {
-            fav = document.getElementById("star");
-            star.style.background = 'url("/static/fav.png")';
-          }
-          document.getElementById("")
+                  // Logic for favorited images displaying the correct icons
+                  if (infoArray[3] == "True") {
+                      fav = document.getElementById("star");
+                      star.style.background = 'url("/static/fav.png")';
+                  }
+                  document.getElementById("")
 
-        }
-       </script>
+              }
+          </script>
 
-         <!-- For each photo in the photo_list, make an image-box div. -->
-          
-         {% for photo in photo_list %}
-          <div class="image-box" id= "{{photo.id}}" onclick= "displayInfo(this)">
-            <img class= "thumb" src={{ photo.url }}>
+          <!-- For each photo in the photo_list, make an image-box div. -->
+          {% for photo in photo_list %}
+          <div class="image-box" id="{{photo.id}}" onclick="displayInfo(this)">
+              <img class="thumb" src={{ photo.url }}>
           </div>
-          <div class="info hidden" id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}};{{photo.is_favorited}};{{photo.date_created}}</div>
-         {% endfor %}
+          <div class="info hidden" id="{{photo.id}}_info">
+              {{ photo.id }};{{ photo.url }};{{ photo.tags|join:", " }};{{ photo.is_favorited }};{{ photo.date_created }}
+          </div>
+
+          {% endfor %}
       </div>
 
       <!-- Hidden area for photo details -->
@@ -259,6 +261,35 @@
             document.getElementById('sidebar-upload-input').addEventListener('change', function () {
                 console.log("File selected! Submitting form.");  // Debug log
                 document.getElementById('upload-form').submit();
+            });
+
+        </script>
+
+        <script>
+            document.getElementById('search-bar').addEventListener('input', function () {
+                const query = this.value.trim().toLowerCase();
+
+                // Get all image boxes
+                const photoBoxes = document.querySelectorAll('.image-box');
+
+                photoBoxes.forEach(photoBox => {
+                    const infoId = `${photoBox.id}_info`;
+                    const infoElement = document.getElementById(infoId);
+
+                    if (!infoElement) {
+                        // If no matching info div, hide the image box
+                        photoBox.style.display = "none";
+                        return;
+                    }
+
+                    // Grab the tag string (3rd element in the semicolon-separated string)
+                    const dataParts = infoElement.textContent.split(';');
+                    const tagData = dataParts.length > 2 ? dataParts[2].toLowerCase() : "";
+
+                    // If the tag string includes the typed query, show it
+                    const matches = tagData.includes(query);
+                    photoBox.style.display = matches || query === "" ? "block" : "none";
+                });
             });
 
         </script>
