@@ -87,7 +87,7 @@
           var imgInfo  = document.getElementById("" + name + "_info").innerHTML; 
 
           const infoArray = imgInfo.split(";");
-
+          document.getElementById("currentid").innerHTML = infoArray[0];
           document.getElementById("full").innerHTML='<img class = "full-img" src = "' + infoArray[1] + '" >';
           document.getElementById("tags").innerHTML = infoArray[2];
           document.getElementById("date").innerHTML = infoArray[4];
@@ -123,7 +123,12 @@
         }
 
         function toggleFav() {
+          // Get the id and set the value of the button to be that id.
+          curr = document.getElementById(currentid).innerHTML;
+          document.getElementById(star).value = curr;
+
           // Add or remove the "favorite" attribute to this image.
+            
           // Update the image of this button accordingly.
 
           //Fetch the set_favorite view in views.py, which updates the is_favorited value.
@@ -161,9 +166,27 @@
       <div class="image-detail hidden" id="image-detail">
 
         <div class= "detailmenu">
+          <!-- hidden photo id that we can easily get/pass-->
+           <p id="currentid" class = "hidden"></p>
+
+          <!-- Close the image-detail div.-->
           <button class="detailbutton" id = "close" onclick = "closeInfo()">
-          <button class="detailbutton" id = "star" onclick = "toggleFav()">
+
+          <!-- Toggle the image's is_favorited property.-->
+
+            <!-- Create a form that links to the set_favorite function-->
+              <form method="POST" action="{% url 'set_favorite' %}">
+                {% csrf_token %}
+
+                <button class="detailbutton" id = "star" value="currentid" onclick = "toggleFav()">
+                <!-- Pass this to views.py fn -->
+                <!-- Update the icon -->
+              </form>
+
+          <!-- Add a tag to the photo.-->
             <button class="detailbutton" id = "tag" onclick = "editTag()">
+
+          <!-- Delete the image from the database.-->
           <button class="detailbutton" id = "delete" onclick = "deleteImage()">
         </div>
 

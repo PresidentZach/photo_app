@@ -175,6 +175,6 @@ def confirm_email(request):
 def set_favorite(request):
     context = {}
     if request.method == "POST":
-        id = request.POST.get("photo_id")
+        id = request.POST.get("star")
 
-    return render(request)
+    return render(request, "app/index.html")
