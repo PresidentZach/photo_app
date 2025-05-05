@@ -27,6 +27,16 @@ class Tag:
         except Exception as e:
             print("Error fetching tag ID:", e)
         return -1
+    
+    def get_name(self):
+        try:
+            result = supabase.table("tag").select("name").eq("id", self.id).execute()
+            if result.data and len(result.data) > 0:
+                self.name = result.data[0]["name"]
+                return self.name
+        except Exception as e:
+            print("Error fetching tag name:", e)
+        return -1
 
     def set_name(self, new_name):
         if self.id == -1:
