@@ -97,7 +97,7 @@
           <div class="image-box" id= "{{photo.id}}" onclick= "displayInfo(this)">
             <img class= "thumb" src={{ photo.url }}>
           </div>
-          <div class="info " id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}};{{photo.is_favorite}}</div>
+          <div class="info hidden" id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}};{{photo.is_favorited}}</div>
          {% endfor %}
       </div>
 
@@ -131,7 +131,7 @@
             
         }
 
-        function addTag() {
+        function editTag() {
           // Gives the user a dialog popup that allows them to add or remove tags.
           let text;
           let newTags = prompt("What tags would you like to add?", "");
@@ -147,10 +147,14 @@
 
        <!-- Image-detail div with photo and tags-->
       <div class="image-detail hidden" id="image-detail">
-        <img class="detailbutton" id = "close" onclick = "closeInfo()" src= {% static 'close.png' %}>
-        <img class="detailbutton" id = "star" onclick = "toggleFav()" src= {% static 'unfav.png' %}>
-        <img class="detailbutton" id = "delete" onclick = "deleteImage()" src = {% static 'remove.png' %}>
-        <img class="detailbutton" onclick = "addTag()" src = {% static 'add.png' %}><br>
+
+        <div class= "detailmenu">
+          <button class="detailbutton" id = "close" onclick = "closeInfo()">
+          <button class="detailbutton" id = "star" onclick = "toggleFav()">
+            <button class="detailbutton" id = "tag" onclick = "editTag()">
+          <button class="detailbutton" id = "delete" onclick = "deleteImage()">
+        </div>
+        
         <div id="full"></div>
         <div id="tags" class="tags"></div>
     </div>
