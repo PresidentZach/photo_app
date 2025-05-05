@@ -19,7 +19,7 @@
       {% if logged_in %}
         <a href="{% url 'logout' %}">Logout</a> 
       {% else %}
-        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'login' %}">Login / Sign Up</a>
       {% endif %}
 
     </div>
@@ -131,16 +131,22 @@
 
         function toggleFav() {
           // Get the id and set the value of the button to be that id.
-          curr = document.getElementById(currentid).innerHTML;
-          document.getElementById(star).value = curr;
+          const imageId = document.getElementById("currentid").innerText;
 
-          // Add or remove the "favorite" attribute to this image.
-            
-          // Update the image of this button accordingly.
-
-          //Fetch the set_favorite view in views.py, which updates the is_favorited value.
-
-    
+          fetch('/set-favorite/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: new URLSearchParams({ 'star': imageId })
+          })
+          .then(response => {
+            if (response.ok) {
+              // change icon or give feedback
+              location.reload();
+            }
+          });
         }
 
         function deleteImage() {
@@ -158,14 +164,26 @@
         function editTag() {
           // Gives the user a dialog popup that allows them to add or remove tags.
           let text;
-          let newTags = prompt("What tags would you like to add?", "");
-          if (newTags == null || person == "") {
-            //Don't do anything.
-          } else {
-            // Add new tags to the image.
-          }
-          
+          let tag_id = prompt("What tags would you like to add?", "");
+          if (tag_id == null || tag_id.trim() === "") return;
         }
+
+        // Helper to get CSRF token
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+          
 
        </script>
 

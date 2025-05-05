@@ -29,7 +29,7 @@ def main():
     '''
 
     '''
-    candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+    candidate_labels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
 
     image_path = os.path.join(os.path.dirname(__file__), 'app', 'static', 'ep233.png')
 
@@ -43,7 +43,7 @@ def main():
     payload = json.dumps({
         "inputs": base64_image,
         "parameters": {
-            "candidate_labels": candidateLabels
+            "candidate_labels": candidate_labels
         }
     })
 
@@ -60,8 +60,9 @@ def main():
 
     response = requests.request("POST", url, headers=headers, data=payload)
     print("Sent image to hugging face")
-    print("Response; ", response.text)
+    print("Response: ", response)
     '''
+    
     execute_from_command_line(sys.argv)
 
     
