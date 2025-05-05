@@ -28,3 +28,14 @@
     fileInput.files = e.dataTransfer.files;
     document.getElementById("upload-form").submit();
   });
+
+
+// Sidebar "Upload" triggers hidden file input
+document.getElementById('sidebar-upload').addEventListener('click', function () {
+    document.getElementById('sidebar-upload-input').click();
+});
+
+// Auto-submit form when files are selected
+document.getElementById('sidebar-upload-input').addEventListener('change', function () {
+    document.getElementById('upload-form').submit();
+});
