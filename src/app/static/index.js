@@ -29,13 +29,20 @@
     document.getElementById("upload-form").submit();
   });
 
+  //logic for search bar stuff
+document.getElementById('search-bar').addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    const photos = document.querySelectorAll('.image-box');
 
-// Sidebar "Upload" triggers hidden file input
-document.getElementById('sidebar-upload').addEventListener('click', function () {
-    document.getElementById('sidebar-upload-input').click();
-});
+    photos.forEach(photo => {
+        const infoId = `${photo.id}_info`;
+        const info = document.getElementById(infoId);
+        if (!info) return;
 
-// Auto-submit form when files are selected
-document.getElementById('sidebar-upload-input').addEventListener('change', function () {
-    document.getElementById('upload-form').submit();
+        const infoParts = info.innerHTML.split(';');
+        const tags = infoParts[2].toLowerCase(); // index 2 = tags
+        const match = tags.includes(query);
+
+        photo.style.display = match || query === "" ? "block" : "none";
+    });
 });
