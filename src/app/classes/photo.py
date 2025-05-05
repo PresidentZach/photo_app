@@ -161,6 +161,7 @@ class Photo:
         }
 
         response = requests.request("POST", url, headers=headers, data=payload)
+        print("response", response.text)
         
         # Making sure that the response was sucessful
         if response and response.status_code == 200:
