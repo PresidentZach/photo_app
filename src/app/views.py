@@ -3,8 +3,7 @@ from django.http import HttpResponse
 from app.classes.photo import Photo
 from app.classes.tag import Tag
 from app.classes.user import User
-from django.urls import reverse
-
+from django.conf import settings
 
 from app.globals import * # global constant variables
 
@@ -84,24 +83,26 @@ def index(request):
             c = User()
             creator = c.get_id()
             
-            # TODO: Make sure we actually get the creator ID
             # Return error if we don't
             if creator is None:
-                print("Creator not found, ")
+                return render(request, "app/index.html", {"error": "CreatorID not found. Please log in."})
 
-                # TODO: Return error here
-
-                creator = "1dc54ee6-40ae-4d61-afb8-09958b911574"
 
             # Inserting tags into the database
             i = Photo(url=image_url, creator=creator, tags=tag_ids)
             i.insert_into_database()
 
+    # Getting the token of the user logged in
     token = request.session.get("supabase_token")
-    if token:
 
-        
-        # If no errors, render upload_image.html
+    # Creating a key in context for if a user is logged in
+    context["logged_in"] = []
+    # If they're logged in
+    if token:
+        # Filling in logged in key of context
+        context["logged_in"].append("Logged in :)")
+
+        # Fetch all photos of that user
         photo_object = User()
 
         photo_list = photo_object.fetch_photos(token=token)
@@ -119,7 +120,11 @@ def login(request):
         password = request.POST.get("password")
         user = User()
 		
-        token = user.login(email=email, password=password)
+        try:
+            token = user.login(email=email, password=password)
+        except Exception as e:
+            return render(request, "app/login.html", {"error": f"Error: {e}"})
+        
         if token:
 			# Store token in Django session
             request.session["supabase_token"] = token
@@ -127,6 +132,26 @@ def login(request):
         else:
             return render(request, "app/login.html", {"error": "Invalid login."})
         
+    return render(request, "app/login.html")
+
+def signup(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = User()
+
+        signup_status = user.signup(email=email, password=password)
+
+        if signup_status == "Already Exists":
+            return render(request, "app/login.html", {"message": "You already have an account. "
+            "Please log in."})
+        elif signup_status == "Needs Email":
+            return render(request, "app/login.html", {"message": "You have been sent a "
+            "confirmation email. Please check your inbox."})
+        else:
+            # Catch other errors and show a generic error message
+            return render(request, "app/login.html", {"error": f"Error: {signup_status}"})
+    
     return render(request, "app/login.html")
 
 def logout(request):
@@ -140,6 +165,12 @@ def logout(request):
 
     # Redirect to login
     return redirect("login")
+
+def confirm_email(request):
+    return render(request, "app/confirm.html", {
+        "SUPABASE_URL": settings.SUPABASE_URL,
+        "SUPABASE_ANON_KEY": settings.SUPABASE_ANON_KEY,
+    })
 
 def set_favorite(request):
     context = {}

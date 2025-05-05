@@ -15,7 +15,13 @@
   <header>
     <div class="logo">PhotoSynthesis</div>
     <div class="account">
-      <a href="{% url 'logout' %}">Logout</a> <!-- Only logout is shown now -->
+      <!-- If the user is logged in display logout -->
+      {% if logged_in %}
+        <a href="{% url 'logout' %}">Logout</a> 
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+
     </div>
   </header>
 
@@ -65,18 +71,14 @@
 			{% endif %}
       </div>
 	  
-	  
-	  
     </nav>
-
     <div class="content">
       <h2>Photo Gallery</h2>
-
 
       <!-- Flexbox Image Grid -->
       <div id = "grid" class="image-grid">
 
-              <!-- Function that opens image-detail div when the current img-box is clicked. -->
+        <!-- Function that opens image-detail div when the current img-box is clicked. -->
         <script>
         function displayInfo(photoID) {
           var name = photoID.id;
@@ -187,6 +189,7 @@
             // Optionally: trigger form submit here
         });
     </script>
+    <script src="{% static 'js/index.js' %}"></script>
 
 </body>
 </html>

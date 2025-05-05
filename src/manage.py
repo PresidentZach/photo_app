@@ -62,10 +62,6 @@ def main():
     print("Sent image to hugging face")
     print("Response; ", response.text)
     '''
-
-    # user1 = User()
-
-    # user1.login("alexander.scalcione@gmail.com", "photoSynthesis1")
     execute_from_command_line(sys.argv)
 
     
