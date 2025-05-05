@@ -90,6 +90,7 @@
 
           document.getElementById("full").innerHTML='<img class = "full-img" src = "' + infoArray[1] + '" >';
           document.getElementById("tags").innerHTML = infoArray[2];
+          document.getElementById("date").innerHTML = infoArray[4];
 
           // Logic for favorited images displaying the correct icons
           if (infoArray[3] == "True") {
@@ -107,7 +108,7 @@
           <div class="image-box" id= "{{photo.id}}" onclick= "displayInfo(this)">
             <img class= "thumb" src={{ photo.url }}>
           </div>
-          <div class="info hidden" id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}};{{photo.is_favorited}}</div>
+          <div class="info hidden" id="{{photo.id}}_info">{{photo.id}};{{ photo.url }};{{photo.tags}};{{photo.is_favorited}};{{photo.date_created}}</div>
          {% endfor %}
       </div>
 
@@ -126,14 +127,6 @@
           // Update the image of this button accordingly.
 
           //Fetch the set_favorite view in views.py, which updates the is_favorited value.
-          fetch('/set-favorite/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            body: JSON.stringify({ photo_id: photoId })
-        }
 
     
         }
@@ -175,8 +168,15 @@
         </div>
 
         <div id="full"></div>
-        <div id="tags" class="tags"></div>
-    </div>
+
+          <div><strong>Tags:</strong>
+            <span id= "tags" class="tags"></span>
+          </div>
+          <div><strong>Date created:</strong>
+            <span id="date" class="date"></span>
+        </div>
+      </div>
+
     <script>
         // When the sidebar "Upload" is clicked, trigger the hidden file input
         document.getElementById('sidebar-upload').addEventListener('click', function () {

@@ -208,7 +208,7 @@ border-radius: 5px;
 }
 
 /* Tags and description */
-.tags, .description {
+.tags, .date {
 font-size: 15px;
 margin-top: 8px;
 }
