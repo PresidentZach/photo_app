@@ -140,3 +140,10 @@ def logout(request):
 
     # Redirect to login
     return redirect("login")
+
+def set_favorite(request):
+    context = {}
+    if request.method == "POST":
+        id = request.POST.get("photo_id")
+
+    return render(request)

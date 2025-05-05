@@ -85,8 +85,16 @@
           var imgInfo  = document.getElementById("" + name + "_info").innerHTML; 
 
           const infoArray = imgInfo.split(";");
-         document.getElementById("full").innerHTML='<img class = "full-img" src = "' + infoArray[1] + '" >';
+
+          document.getElementById("full").innerHTML='<img class = "full-img" src = "' + infoArray[1] + '" >';
           document.getElementById("tags").innerHTML = infoArray[2];
+
+          // Logic for favorited images displaying the correct icons
+          if (infoArray[3] == "True") {
+            fav = document.getElementById("star");
+            star.style.background = 'url("/static/fav.png")';
+          }
+          document.getElementById("")
 
         }
        </script>
@@ -115,6 +123,15 @@
           // Add or remove the "favorite" attribute to this image.
           // Update the image of this button accordingly.
 
+          //Fetch the set_favorite view in views.py, which updates the is_favorited value.
+          fetch('/set-favorite/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ photo_id: photoId })
+        }
 
     
         }
@@ -154,7 +171,7 @@
             <button class="detailbutton" id = "tag" onclick = "editTag()">
           <button class="detailbutton" id = "delete" onclick = "deleteImage()">
         </div>
-        
+
         <div id="full"></div>
         <div id="tags" class="tags"></div>
     </div>
