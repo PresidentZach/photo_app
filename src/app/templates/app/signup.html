@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - PhotoSynthesis</title>
+    <title>Sign Up - PhotoSynthesis</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
 </head>
 <body>
 
-  <!-- Simple login page -->
+  <!-- Simple signup page -->
   <div class="center-wrapper">
   <div class="login-page">
-    <h1>Welcome back 🌿</h1>
+    <h1>Welcome 🌿</h1>
+    <!-- Display error message if it exists -->
+    {% if error %}
+      <div class="error-message">
+        {{ error }}
+      </div>
+    {% endif %}
     <form class="login-form" method="POST" action="{% url 'signup' %}">
       {% csrf_token %}
-      <input type="email" name="email" id="email" placeholder="Email" required />
+      <input type="text" name="email" id="email" placeholder="Email" required />
       <input type="password" name="password" id="password" placeholder="Password" required />
-      <button type="submit">Login</button>
+      <button type="submit">Sign Up</button>
     </form>
     <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
     <p><a href="{% url 'index' %}">Return Home</a></p>

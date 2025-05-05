@@ -235,6 +235,17 @@ a:hover {
   color: #276749; /* Slightly darker green on hover */
 }
 
+/* error message colors */
+.error-message {
+  color: #d9534f; /* Red color for error */
+  background-color: #ffe5e5; /* Light red background */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
 /* Wrapper for centering the login page */
 .center-wrapper {
   display: flex;

@@ -108,7 +108,7 @@ def index(request):
 
     return render(request, "app/index.html", context=context)
 
-
+"""
 def login(request):
     if request.method == "POST":
         email = request.POST.get("email")
@@ -128,7 +128,29 @@ def login(request):
             return render(request, "app/login.html", {"error": "Invalid login."})
         
     return render(request, "app/login.html")
-
+"""
+def login(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = User()
+        
+        try:
+            token = user.login(email=email, password=password)
+        except Exception as e:
+            # Pass the error message to the template
+            return render(request, "app/login.html", {"error": "Email or password is incorrect."})
+        
+        if token:
+            # Store token in Django session
+            request.session["supabase_token"] = token
+            return redirect("index")
+        else:
+            # Handle invalid login
+            return render(request, "app/login.html", {"error": "Email or password is incorrect."})
+        
+    return render(request, "app/login.html")
+    
 def signup(request):
     if request.method == "POST":
         email = request.POST.get("email")
