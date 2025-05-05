@@ -32,43 +32,48 @@
         <input type="text" placeholder="Search...">
       </div>
       <ul>
-        <li>* Favorites</li>
-        <li> Tags</li>
-        <li> Upload</li> <!-- Only keeping needed links -->
+          <li>* Favorites</li>
+          <li> Tags</li>
+          <li id="sidebar-upload" class="clickable">Upload</li>
       </ul>
 
       <!-- Upload area -->
       <div class="upload-area">
-	  
-         <!--Creating a form. When upload button is pressed, upload_image(request) in views.py is ran-->
-		<form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
-			{% csrf_token %}
-				<label for="photoUpload">Upload Photos:</label>
-					<br></br>
-				<input type="file" name="image" accept="image/png, image/jpeg, image/jpg" multiple required>
-					<br></br>
-				<button type="submit">Upload</button>
-		</form>
-    {% if images_data %}
-		    <h2>Upload Status</h2>
-        <h2>Tags:</h2>
-    {% endif %}
 
-			{% if error %}
-				<p style="color: red;">{{ error }}</p>
-			{% else %}
-				
-				<ul>
-					{% for image_data in images_data %}
-						<li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
-						<ul>
-							{% for tag, score in image_data.tags_and_scores %}
-								<li>{{ tag }} - Score: {{ score }}</li>
-							{% endfor %}
-						</ul>
-					{% endfor %}
-				</ul>
-			{% endif %}
+          <!--Creating a form. When upload button is pressed, upload_image(request) in views.py is ran-->
+          <!-- Shared Upload Form -->
+          <form id="upload-form" method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
+              {% csrf_token %}
+
+              <!-- Visible input for drag and drop area -->
+              <label for="photoUpload">Upload Photos:</label><br>
+              <input type="file" id="photoUpload" name="image" accept="image/png, image/jpeg, image/jpg" multiple required><br>
+              <button type="submit">Upload</button>
+
+              <!-- Hidden input for sidebar click -->
+              <input type="file" id="sidebar-upload-input" name="image" accept="image/png, image/jpeg, image/jpg" multiple hidden>
+          </form>
+
+          {% if image_data %}
+          <h2>Upload Status</h2>
+          <h2>Tags:</h2>
+          {% endif %}
+
+          {% if error %}
+          <p style="color: red;">{{ error }}</p>
+          {% else %}
+
+          <ul>
+              {% for image_data in images_data %}
+              <li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
+              <ul>
+                  {% for tag, score in image_data.tags_and_scores %}
+                  <li>{{ tag }} - Score: {{ score }}</li>
+                  {% endfor %}
+              </ul>
+              {% endfor %}
+          </ul>
+          {% endif %}
       </div>
 	  
     </nav>
@@ -232,5 +237,20 @@
     </script>
     <script src="{% static 'js/index.js' %}"></script>
 
+
+        <script>
+            // When sidebar "Upload" is clicked
+            document.getElementById('sidebar-upload').addEventListener('click', function () {
+                console.log("Sidebar clicked!");  // Debug log
+                document.getElementById('sidebar-upload-input').click();
+            });
+
+            // When a file is selected through sidebar-triggered input
+            document.getElementById('sidebar-upload-input').addEventListener('change', function () {
+                console.log("File selected! Submitting form.");  // Debug log
+                document.getElementById('upload-form').submit();
+            });
+
+        </script>
 </body>
 </html>
