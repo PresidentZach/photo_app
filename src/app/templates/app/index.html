@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PhotoSynthesis</title>
   {% load static %}
- <link rel="stylesheet" href="{% static 'styles.css' %}">
- <script src="{% static 'index.js' %}"></script>
+ <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+ <script src="{% static '/js/index.js' %}"></script>
  <body onload="displayPhotos()">
 </head>
 <body>
@@ -159,10 +159,17 @@
             
         }
 
-        function editTag() {
-          // Gives the user a dialog popup that allows them to add or remove tags.
+        function addTag() {
+          // Gives the user a dialog popup that allows them to add tags.
           let text;
           let tag_id = prompt("What tags would you like to add?", "");
+          if (tag_id == null || tag_id.trim() === "") return;
+        }
+
+        function removeTag() {
+          // Gives the user a dialog popup that allows them to remove tags.
+          let text;
+          let tag_id = prompt("What tags would you like to remove??", "");
           if (tag_id == null || tag_id.trim() === "") return;
         }
 
