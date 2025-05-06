@@ -129,42 +129,42 @@
         }
 
         function deleteImage(photoId) {
-    if (confirm("Are you sure you would like to delete this image?")) {
-        console.log("Photo ID to delete:", photoId); // Debugging line
+          if (confirm("Are you sure you would like to delete this image?")) {
+          console.log("Photo ID to delete:", photoId); // Debugging line
 
-        if (!photoId) {
-            alert("Photo ID not found. Please try again.");
-            return;
-        }
+          if (!photoId) {
+              alert("Photo ID not found. Please try again.");
+              return;
+          }
 
-        // CSRF token for Django
-        const csrfToken = getCookie("csrftoken");
+          // CSRF token for Django
+          const csrfToken = getCookie("csrftoken");
 
-        fetch("{% url 'delete_photo' %}", {
+          fetch("{% url 'delete_photo' %}", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken,
             },
             body: JSON.stringify({ photo_id: photoId }),
-        })
-        .then(response => response.json())
-        .then(data => {
+          })
+          .then(response => response.json())
+          .then(data => {
             if (data.success) {
-                alert(data.message);
-                // Remove the photo from the UI
-                document.getElementById(photoId).remove();
-                document.getElementById("image-detail").style.display = "none";
+              alert(data.message);
+              // Remove the photo from the UI
+              document.getElementById(photoId).remove();
+              document.getElementById("image-detail").style.display = "none";
             } else {
-                alert(data.error || "Failed to delete the photo.");
+              alert(data.error || "Failed to delete the photo.");
             }
-        })
-        .catch(error => {
+          })
+          .catch(error => {
             console.error("Error deleting photo:", error);
             alert("An error occurred while deleting the photo.");
-        });
-    }
-}
+          });
+        }
+      }
 
         function addTag() {
           // Gives the user a dialog popup that allows them to add tags.
@@ -197,13 +197,13 @@
         }
         
         function deleteImageFromDetailPanel() {
-    const photoId = document.getElementById("currentid").innerText.trim();
-    if (!photoId) {
-        alert("Photo ID not found.");
-        return;
-    }
-    deleteImage(photoId);
-}
+          const photoId = document.getElementById("currentid").innerText.trim();
+          if (!photoId) {
+          alert("Photo ID not found.");
+          return;
+        }
+        deleteImage(photoId);
+      }
 
 
        </script>
