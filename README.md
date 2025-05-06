@@ -31,7 +31,6 @@ This project was created as part of our Software Engineering course (CSIT 413) a
 - **JavaScript** – Frontend interactivity  
 - **Git & GitHub** – Version control and collaboration
 - **GitHub Projects (Kanban)** – Task management and Agile workflow tracking  
-- **Render** – Website hosting
 
 ---
 

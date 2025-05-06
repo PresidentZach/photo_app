@@ -1,6 +1,7 @@
 from app.supabase_client import supabase
 from datetime import datetime
 from dotenv import load_dotenv
+from app.tag_labels import tag_labels
 
 import base64
 import requests
@@ -135,7 +136,7 @@ class Photo:
         base64_image = base64.b64encode(image_content).decode('utf-8')
 
         # Defining labels that the AI model can use for tags
-        candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
+        # candidateLabels = ["cat", "dog", "car", "tree", "person", "beach", "forest"]
         # candidateLabels = get_user_tags_available()
 
         # URL to call API
@@ -145,7 +146,7 @@ class Photo:
         payload = json.dumps({
             "inputs": base64_image,
             "parameters": {
-                "candidate_labels": candidateLabels
+                "candidate_labels": tag_labels
             }
         })
 
@@ -161,6 +162,7 @@ class Photo:
         }
 
         response = requests.request("POST", url, headers=headers, data=payload)
+        print("response", response.text)
         
         # Making sure that the response was sucessful
         if response and response.status_code == 200:

@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PhotoSynthesis</title>
   {% load static %}
- <link rel="stylesheet" href="{% static 'css/styles.css' %}">
- <link rel="icon" href="{% static 'img/fav.png' %}">
- <body onload="displayPhotos()">
+ <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+ <script src="{% static '/js/index.js' %}"></script>
 </head>
 <body>
 
@@ -19,7 +18,7 @@
       {% if logged_in %}
         <a href="{% url 'logout' %}">Logout</a> 
       {% else %}
-        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'login' %}">Login / Sign Up</a>
       {% endif %}
 
     </div>
@@ -28,97 +27,182 @@
   <div class="main">
     <nav>
       <!-- Sidebar with search and links -->
-      <div class="search-bar">
-        <input type="text" placeholder="Search...">
-      </div>
+        <div class="search-bar">
+            <input type="text" id="search-bar" placeholder="Search...">
+        </div>
       <ul>
-        <li>* Favorites</li>
-        <li> Tags</li>
-        <li> Upload</li> <!-- Only keeping needed links -->
+          <li>* Favorites</li>
+          <li> Tags</li>
+          <li id="sidebar-upload" class="clickable">Upload</li>
       </ul>
 
       <!-- Upload area -->
       <div class="upload-area">
-	  
-         <!--Creating a form. When upload button is pressed, upload_image(request) in views.py is ran-->
-		<form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
-			{% csrf_token %}
-				<label for="photoUpload">Upload Photos:</label>
-					<br></br>
-				<input type="file" name="image" accept="image/png, image/jpeg, image/jpg" multiple required>
-					<br></br>
-				<button type="submit">Upload</button>
-		</form>
-		{% if image_data %}
-		    <h2>Upload Status</h2>
-        <h2>Tags:</h2>
-    {% endif %}
 
-			{% if error %}
-				<p style="color: red;">{{ error }}</p>
-			{% else %}
-				
-				<ul>
-					{% for image_data in images_data %}
-						<li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
-						<ul>
-							{% for tag, score in image_data.tags_and_scores %}
-								<li>{{ tag }} - Score: {{ score }}</li>
-							{% endfor %}
-						</ul>
-					{% endfor %}
-				</ul>
-			{% endif %}
+          <!--Creating a form. When upload button is pressed, upload_image(request) in views.py is ran-->
+          <!-- Shared Upload Form -->
+          <form id="upload-form" method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
+              {% csrf_token %}
+
+              <!-- Visible input for drag and drop area -->
+              <label for="photoUpload">Upload Photos:</label><br>
+              <input type="file" id="photoUpload" name="image" accept="image/png, image/jpeg, image/jpg" multiple required><br>
+              <button type="submit">Upload</button>
+
+              <!-- Hidden input for sidebar click -->
+              <input type="file" id="sidebar-upload-input" name="image" accept="image/png, image/jpeg, image/jpg" multiple hidden>
+          </form>
+
+          {% if image_data %}
+          <h2>Upload Status</h2>
+          <h2>Tags:</h2>
+          {% endif %}
+
+          {% if error %}
+          <p style="color: red;">{{ error }}</p>
+          {% else %}
+
+          <ul>
+              {% for image_data in images_data %}
+              <li><strong>{{ image_data.name }} - URL: {{ image_data.url }}</strong></li>
+              <ul>
+                  {% for tag, score in image_data.tags_and_scores %}
+                  <li>{{ tag }} - Score: {{ score }}</li>
+                  {% endfor %}
+              </ul>
+              {% endfor %}
+          </ul>
+          {% endif %}
       </div>
 	  
     </nav>
     <div class="content">
       <h2>Photo Gallery</h2>
 
-      <!-- Flexbox Image Grid -->
-      <div id = "grid" class="image-grid">
+      <!--Flexbox Image Grid -->
+      <div id="grid" class="image-grid">
 
-        <!-- Function that opens image-detail div when the current img-box is clicked. -->
-        <script>
-        function displayInfo() {
-          var imgDetail = document.getElementById("image-detail");
-          imgDetail.style.display = "block";
-        }
-       </script>
+          <!-- Function that opens image-detail div when the current img-box is clicked. -->
+          <script>
+              function displayInfo(photoID) {
+                  var name = photoID.id;
+                  var imgDetail = document.getElementById("image-detail");
+                  imgDetail.style.display = "block";
+                  var imgInfo = document.getElementById("" + name + "_info").innerHTML;
 
-         <!-- For each url in url_list, make an image-box div. -->
-          
-         {% for i in url_list%}
-          <div class="image-box"onclick= "displayInfo()">
-            <img class= "thumb" src={{ i }}>
+                  const infoArray = imgInfo.split(";");
+                  document.getElementById("currentid").innerHTML = infoArray[0];
+                  document.getElementById("full").innerHTML = '<img class = "full-img" src = "' + infoArray[1] + '" >';
+                  document.getElementById("tags").innerHTML = infoArray[2];
+                  document.getElementById("date").innerHTML = infoArray[4];
+
+                  // Logic for favorited images displaying the correct icons
+                  if (infoArray[3] == "True") {
+                      fav = document.getElementById("star");
+                      star.style.background = 'url("/static/fav.png")';
+                  }
+                  document.getElementById("")
+
+              }
+          </script>
+
+          <!-- For each photo in the photo_list, make an image-box div. -->
+          {% for photo in photo_list %}
+          <div class="image-box" id="{{photo.id}}" onclick="displayInfo(this)">
+              <img class="thumb" src={{ photo.url }}>
           </div>
-         {% endfor %}
+          <div class="info hidden" id="{{photo.id}}_info">
+              {{ photo.id }};{{ photo.url }};{{ photo.tags|join:", " }};{{ photo.is_favorited }};{{ photo.date_created }}
+          </div>
+
+          {% endfor %}
       </div>
-
-
-
-
-      <!-- Test image box.-->
-      
-     <!-- <div class="image-box" onclick= "displayInfo()"><img class="thumb"  src={% static 'ep233.png' %}></div> -->
-
 
       <!-- Hidden area for photo details -->
 
-      <!-- Script for close button, that closes image-detail div -->
+      <!-- Script for buttons on  image-detail div -->
        <script>
+        // Closes the image-detail div.
         function closeInfo() {
           var imgDetail = document.getElementById("image-detail");
           imgDetail.style.display = "none";
         }
+
+        function deleteImage() {
+            if (confirm("Are you sure you would like to delete this image?")) {
+              //Delete the image from the database.
+              //Close the image-detail menu.
+                var imgDetail = document.getElementById("image-detail");
+                imgDetail.style.display = "none";
+            } else {
+              //Don't do anything.
+            }
+            
+        }
+
+        function addTag() {
+          // Gives the user a dialog popup that allows them to add tags.
+          let text;
+          let tag_id = prompt("What tags would you like to add?", "");
+          if (tag_id == null || tag_id.trim() === "") return;
+        }
+
+        function removeTag() {
+          // Gives the user a dialog popup that allows them to remove tags.
+          let text;
+          let tag_id = prompt("What tags would you like to remove??", "");
+          if (tag_id == null || tag_id.trim() === "") return;
+        }
+
+        // Helper to get CSRF token
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+          
+
        </script>
 
        <!-- Image-detail div with photo and tags-->
       <div class="image-detail hidden" id="image-detail">
-        <img class="close" onclick = "closeInfo()" src= {% static 'img/close.png' %}><br>
-        <img class="full-img"  src={% static 'img/ep233.png' %}>
-        <div class="tags">Tags: [Tags]</div>
-    </div>
+
+        <div class= "detailmenu">
+          <!-- hidden photo id that we can easily get/pass-->
+           <p id="currentid" class = "hidden"></p>
+
+          <!-- Close the image-detail div.-->
+          <button class="detailbutton" id = "close" onclick = "closeInfo()">
+
+          <!-- Add a tag to the photo.-->
+            <button class="detailbutton" id = "addtag" onclick = "addTag()">
+
+          <!-- Remove a tag from the photo.-->
+            <button class="detailbutton" id = "removetag" onclick = "removeTag()">
+
+          <!-- Delete the image from the database.-->
+          <button class="detailbutton" id = "delete" onclick = "deleteImage()">
+        </div>
+
+        <div id="full"></div>
+
+          <div><strong>Tags:</strong>
+            <span id= "tags" class="tags"></span>
+          </div>
+          <div><strong>Date created:</strong>
+            <span id="date" class="date"></span>
+        </div>
+      </div>
+
     <script>
         // When the sidebar "Upload" is clicked, trigger the hidden file input
         document.getElementById('sidebar-upload').addEventListener('click', function () {
@@ -133,5 +217,49 @@
     </script>
     <script src="{% static 'js/index.js' %}"></script>
 
+
+        <script>
+            // When sidebar "Upload" is clicked
+            document.getElementById('sidebar-upload').addEventListener('click', function () {
+                console.log("Sidebar clicked!");  // Debug log
+                document.getElementById('sidebar-upload-input').click();
+            });
+
+            // When a file is selected through sidebar-triggered input
+            document.getElementById('sidebar-upload-input').addEventListener('change', function () {
+                console.log("File selected! Submitting form.");  // Debug log
+                document.getElementById('upload-form').submit();
+            });
+
+        </script>
+
+        <script>
+            document.getElementById('search-bar').addEventListener('input', function () {
+                const query = this.value.trim().toLowerCase();
+
+                // Get all image boxes
+                const photoBoxes = document.querySelectorAll('.image-box');
+
+                photoBoxes.forEach(photoBox => {
+                    const infoId = `${photoBox.id}_info`;
+                    const infoElement = document.getElementById(infoId);
+
+                    if (!infoElement) {
+                        // If no matching info div, hide the image box
+                        photoBox.style.display = "none";
+                        return;
+                    }
+
+                    // Grab the tag string (3rd element in the semicolon-separated string)
+                    const dataParts = infoElement.textContent.split(';');
+                    const tagData = dataParts.length > 2 ? dataParts[2].toLowerCase() : "";
+
+                    // If the tag string includes the typed query, show it
+                    const matches = tagData.includes(query);
+                    photoBox.style.display = matches || query === "" ? "block" : "none";
+                });
+            });
+
+        </script>
 </body>
 </html>
