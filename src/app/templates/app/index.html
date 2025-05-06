@@ -128,17 +128,43 @@
           imgDetail.style.display = "none";
         }
 
-        function deleteImage() {
-            if (confirm("Are you sure you would like to delete this image?")) {
-              //Delete the image from the database.
-              //Close the image-detail menu.
-                var imgDetail = document.getElementById("image-detail");
-                imgDetail.style.display = "none";
-            } else {
-              //Don't do anything.
-            }
-            
+        function deleteImage(photoId) {
+    if (confirm("Are you sure you would like to delete this image?")) {
+        console.log("Photo ID to delete:", photoId); // Debugging line
+
+        if (!photoId) {
+            alert("Photo ID not found. Please try again.");
+            return;
         }
+
+        // CSRF token for Django
+        const csrfToken = getCookie("csrftoken");
+
+        fetch("{% url 'delete_photo' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify({ photo_id: photoId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                // Remove the photo from the UI
+                document.getElementById(photoId).remove();
+                document.getElementById("image-detail").style.display = "none";
+            } else {
+                alert(data.error || "Failed to delete the photo.");
+            }
+        })
+        .catch(error => {
+            console.error("Error deleting photo:", error);
+            alert("An error occurred while deleting the photo.");
+        });
+    }
+}
 
         function addTag() {
           // Gives the user a dialog popup that allows them to add tags.
@@ -169,7 +195,16 @@
           }
           return cookieValue;
         }
-          
+        
+        function deleteImageFromDetailPanel() {
+    const photoId = document.getElementById("currentid").innerText.trim();
+    if (!photoId) {
+        alert("Photo ID not found.");
+        return;
+    }
+    deleteImage(photoId);
+}
+
 
        </script>
 
@@ -190,7 +225,9 @@
             <button class="detailbutton" id = "removetag" onclick = "removeTag()">
 
           <!-- Delete the image from the database.-->
-          <button class="detailbutton" id = "delete" onclick = "deleteImage()">
+          <button class="detailbutton" id="delete" onclick="deleteImageFromDetailPanel()"></button>
+          
+
         </div>
 
         <div id="full"></div>
