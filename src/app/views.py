@@ -139,3 +139,25 @@ def delete_photo(request):
         return JsonResponse({"success": True, "message": f"Photo {photo_id} deleted successfully."})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
+@require_POST
+@csrf_exempt
+def toggle_favorite(request):
+    try:
+        body = json.loads(request.body)
+        photo_id = body.get("photo_id")
+
+        if not photo_id:
+            return JsonResponse({"error": "Photo ID not provided."}, status=400)
+
+        photo = Photo()
+        photo.id = int(photo_id)
+        result = photo.set_is_favorited()  # Returns True if favorited, False if unfavorited
+
+        return JsonResponse({
+            "success": True,
+            "favorited": result,
+            "message": f"Photo {photo_id} is now {'favorited' if result else 'unfavorited'}."
+        })
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
