@@ -97,10 +97,11 @@
                   document.getElementById("date").innerHTML = infoArray[4];
 
                   // Logic for favorited images displaying the correct icons
-                  if (infoArray[3] == "True") {
-                      fav = document.getElementById("star");
-                      star.style.background = 'url("/static/fav.png")';
-                  }
+                  // Always set favorite icon based on status
+                  const isFavorited = infoArray[3] === "True";
+                  const favIcon = document.getElementById("favIcon");
+                  favIcon.src = isFavorited ? "/static/img/fav.png" : "/static/img/unfav.png";
+
                   document.getElementById("")
 
               }
@@ -112,8 +113,8 @@
               <img class="thumb" src={{ photo.url }}>
           </div>
           <div class="info hidden" id="{{photo.id}}_info">
-              {{ photo.id }};{{ photo.url }};{{ photo.tags|join:", " }};{{ photo.is_favorited }};{{ photo.date_created }}
-          </div>
+            {{ photo.id }};{{ photo.url }};{{ photo.readable_tags|join:", " }};{{ photo.is_favorited }};{{ photo.date_created }}
+          </div>               
 
           {% endfor %}
       </div>
@@ -206,6 +207,45 @@
       }
 
 
+function toggleFavorite() {
+    const photoId = document.getElementById("currentid").innerText.trim();
+    if (!photoId) {
+        alert("Photo ID not found.");
+        return;
+    }
+
+    const csrfToken = getCookie("csrftoken");
+
+    fetch("{% url 'toggle_favorite' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({ photo_id: photoId }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const favIcon = document.getElementById("favIcon");
+            favIcon.src = data.favorited ? "/static/img/fav.png" : "/static/img/unfav.png";
+
+            // ✅ Update the hidden info div so the icon works on the next click
+            const infoDiv = document.getElementById(`${photoId}_info`);
+            const parts = infoDiv.innerHTML.split(";");
+            parts[3] = data.favorited ? "True" : "False";
+            infoDiv.innerHTML = parts.join(";");
+        } else {
+            alert(data.error || "Failed to toggle favorite.");
+        }
+    })
+    .catch(error => {
+        console.error("Error toggling favorite:", error);
+        alert("An error occurred while updating favorite.");
+    });
+}
+
+
        </script>
 
        <!-- Image-detail div with photo and tags-->
@@ -227,6 +267,9 @@
           <!-- Delete the image from the database.-->
           <button class="detailbutton" id="delete" onclick="deleteImageFromDetailPanel()"></button>
           
+          <button class="detailbutton" onclick="toggleFavorite()" id="favoriteButton">
+            <img id="favIcon" src="/static/img/unfav.png" alt="Favorite" style="height: 20px;">
+          </button>          
 
         </div>
 

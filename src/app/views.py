@@ -19,6 +19,17 @@ def index(request):
         context["logged_in"].append("Logged in :)")
         photo_object = User()
         photo_list = photo_object.fetch_photos(token=token)
+
+        # Convert tag IDs to names
+        for photo in photo_list:
+            readable_tags = []
+            for tag_id in photo.tags:
+                t = Tag("placeholder", id=tag_id)
+                tag_name = t.get_name()
+                readable_tags.append(tag_name)
+
+            photo.readable_tags = readable_tags
+
         context["photo_list"] = photo_list
 
     if request.method == "POST":
@@ -137,5 +148,27 @@ def delete_photo(request):
         photo.remove_from_database()
 
         return JsonResponse({"success": True, "message": f"Photo {photo_id} deleted successfully."})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@require_POST
+@csrf_exempt
+def toggle_favorite(request):
+    try:
+        body = json.loads(request.body)
+        photo_id = body.get("photo_id")
+
+        if not photo_id:
+            return JsonResponse({"error": "Photo ID not provided."}, status=400)
+
+        photo = Photo()
+        photo.id = int(photo_id)
+        result = photo.set_is_favorited()  # Returns True if favorited, False if unfavorited
+
+        return JsonResponse({
+            "success": True,
+            "favorited": result,
+            "message": f"Photo {photo_id} is now {'favorited' if result else 'unfavorited'}."
+        })
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
