@@ -128,26 +128,6 @@
           imgDetail.style.display = "none";
         }
 
-        function toggleFav() {
-          // Get the id and set the value of the button to be that id.
-          const imageId = document.getElementById("currentid").innerText;
-
-          fetch('/set-favorite/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: new URLSearchParams({ 'star': imageId })
-          })
-          .then(response => {
-            if (response.ok) {
-              // change icon or give feedback
-              location.reload();
-            }
-          });
-        }
-
         function deleteImage() {
             if (confirm("Are you sure you would like to delete this image?")) {
               //Delete the image from the database.
@@ -202,17 +182,6 @@
 
           <!-- Close the image-detail div.-->
           <button class="detailbutton" id = "close" onclick = "closeInfo()">
-
-          <!-- Toggle the image's is_favorited property.-->
-
-            <!-- Create a form that links to the set_favorite function-->
-              <form method="POST" action="{% url 'set_favorite' %}">
-                {% csrf_token %}
-
-                <button class="detailbutton" id = "star" value="currentid" onclick = "toggleFav()">
-                <!-- Pass this to views.py fn -->
-                <!-- Update the icon -->
-              </form>
 
           <!-- Add a tag to the photo.-->
             <button class="detailbutton" id = "addtag" onclick = "addTag()">
