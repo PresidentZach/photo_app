@@ -31,7 +31,7 @@
             <input type="text" id="search-bar" placeholder="Search...">
         </div>
       <ul>
-          <li>* Favorites</li>
+        <li id="filter-favorites" class="clickable">★ Favorites</li>
           <li> Tags</li>
           <li id="sidebar-upload" class="clickable">Upload</li>
       </ul>
@@ -114,7 +114,7 @@
           </div>
           <div class="info hidden" id="{{photo.id}}_info">
             {{ photo.id }};{{ photo.url }};{{ photo.readable_tags|join:", " }};{{ photo.is_favorited }};{{ photo.date_created }}
-          </div>               
+          </div>                      
 
           {% endfor %}
       </div>
@@ -246,6 +246,31 @@ function toggleFavorite() {
 }
 
 
+let favoritesFilterOn = false;
+
+document.getElementById('filter-favorites').addEventListener('click', function () {
+    const button = this;
+    const photos = document.querySelectorAll('.image-box');
+
+    if (favoritesFilterOn) {
+        photos.forEach(photo => photo.style.display = "block");
+        button.classList.remove("filter-active");
+        favoritesFilterOn = false;
+    } else {
+        photos.forEach(photo => {
+            const info = document.getElementById(`${photo.id}_info`);
+            if (!info) return;
+
+            const parts = info.textContent.split(';');
+            const isFavorited = parts[3].trim() === "True";
+
+            photo.style.display = isFavorited ? "block" : "none";
+        });
+        button.classList.add("filter-active");
+        favoritesFilterOn = true;
+    }
+});
+
        </script>
 
        <!-- Image-detail div with photo and tags-->
@@ -278,7 +303,7 @@ function toggleFavorite() {
           <div><strong>Tags:</strong>
             <span id= "tags" class="tags"></span>
           </div>
-          <div><strong>Date created:</strong>
+          <div><strong>Date uploaded:</strong>
             <span id="date" class="date"></span>
         </div>
       </div>

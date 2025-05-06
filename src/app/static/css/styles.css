@@ -317,3 +317,9 @@ a:hover {
   .login-form button:hover {
       background-color: #2f855a;
   }
+
+  .filter-active {
+    background-color: #d0eaff; /* light blue */
+    border-radius: 6px;
+  }
+  
