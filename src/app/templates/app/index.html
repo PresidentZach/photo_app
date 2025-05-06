@@ -249,14 +249,14 @@ function toggleFavorite() {
 let favoritesFilterOn = false;
 
 document.getElementById('filter-favorites').addEventListener('click', function () {
+    const button = this;
     const photos = document.querySelectorAll('.image-box');
 
     if (favoritesFilterOn) {
-        // Show all photos
         photos.forEach(photo => photo.style.display = "block");
+        button.classList.remove("filter-active");
         favoritesFilterOn = false;
     } else {
-        // Show only favorited
         photos.forEach(photo => {
             const info = document.getElementById(`${photo.id}_info`);
             if (!info) return;
@@ -266,6 +266,7 @@ document.getElementById('filter-favorites').addEventListener('click', function (
 
             photo.style.display = isFavorited ? "block" : "none";
         });
+        button.classList.add("filter-active");
         favoritesFilterOn = true;
     }
 });
