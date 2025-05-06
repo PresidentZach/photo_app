@@ -166,11 +166,5 @@ def confirm_email(request):
         "SUPABASE_ANON_KEY": settings.SUPABASE_ANON_KEY,
     })
 
-def set_favorite(request):
-    context = {}
-    if request.method == "POST":
-        id = request.POST.get("star")
-
-    return render(request, "app/index.html")
 
     
