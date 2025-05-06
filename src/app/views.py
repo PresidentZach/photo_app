@@ -19,6 +19,17 @@ def index(request):
         context["logged_in"].append("Logged in :)")
         photo_object = User()
         photo_list = photo_object.fetch_photos(token=token)
+
+        # Convert tag IDs to names
+        for photo in photo_list:
+            readable_tags = []
+            for tag_id in photo.tags:
+                t = Tag("placeholder", id=tag_id)
+                tag_name = t.get_name()
+                readable_tags.append(tag_name)
+
+            photo.readable_tags = readable_tags
+
         context["photo_list"] = photo_list
 
     if request.method == "POST":

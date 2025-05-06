@@ -113,8 +113,8 @@
               <img class="thumb" src={{ photo.url }}>
           </div>
           <div class="info hidden" id="{{photo.id}}_info">
-            {{ photo.id }};{{ photo.url }};{{ photo.tags|join:", " }};{{ photo.is_favorited }};{{ photo.date_created }}
-          </div>          
+            {{ photo.id }};{{ photo.url }};{{ photo.readable_tags|join:", " }};{{ photo.is_favorited }};{{ photo.date_created }}
+          </div>               
 
           {% endfor %}
       </div>
