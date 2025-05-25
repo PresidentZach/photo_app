@@ -1,7 +1,3 @@
-![photosynthesis_logo](https://github.com/user-attachments/assets/87634c36-a697-429e-a8c9-e1b8a9b182d8)
-
-**This logo was AI generated**
-
 # photo_app  
 *(Unofficially known as Photosynthesis)*
 a
