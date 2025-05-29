@@ -1,5 +1,3 @@
-insert photosynthesis logo here
-
 # photo_app  
 *(Unofficially known as Photosynthesis)*
 a
